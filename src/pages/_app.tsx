@@ -3,7 +3,7 @@ import theme from '../theme'
 import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react'
 import { Provider, createClient, dedupExchange, fetchExchange  } from 'urql'
 import { cacheExchange, QueryInput, Cache } from '@urql/exchange-graphcache';
-import { LoginMutation, MeDocument, MeQuery, RegisterMutation } from '../generated/graphql';
+import { LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation } from '../generated/graphql';
 
 function updateQueryTyped<Result, Query>(
   cache: Cache,
@@ -19,6 +19,14 @@ const client = createClient({
   exchanges: [dedupExchange, cacheExchange({
     updates: {
       Mutation: {
+        logout: (_result, args, cache, info) => {
+          updateQueryTyped<LogoutMutation, MeQuery>(
+            cache, 
+            { query: MeDocument },
+            _result,
+            () => ({ me: null })
+          );
+        },
         login: (_result, args, cache, info) => {
           updateQueryTyped<LoginMutation, MeQuery>(
             cache, 
@@ -66,6 +74,7 @@ function MyApp({ Component, pageProps }: any) {
       <ChakraProvider resetCSS theme={theme}>
         <ColorModeProvider
           options={{
+            initialColorMode: 'light',
             useSystemColorMode: false,
           }}
         >

@@ -1,0 +1,10 @@
+fragment RegularGame on Game {
+  id
+  title
+  author
+  year
+  shortDescription
+  longDescription
+  thumbnail
+  banner
+}

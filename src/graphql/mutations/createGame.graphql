@@ -1,5 +1,10 @@
 mutation CreateGame($input: GameInput!) {
   createGame(input: $input) {
-    ...RegularGame
+    game {
+      ...RegularGame
+    }
+    errors {
+      ...RegularError
+    }
   }
 }

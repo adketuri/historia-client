@@ -16,12 +16,18 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  me?: Maybe<User>;
   games: Array<Game>;
   game?: Maybe<Game>;
   hello: Scalars['String'];
   posts: Array<Post>;
   post?: Maybe<Post>;
-  me?: Maybe<User>;
+};
+
+
+export type QueryGamesArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 
@@ -34,17 +40,27 @@ export type QueryPostArgs = {
   id: Scalars['Float'];
 };
 
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Int'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  isSubmitter: Scalars['Boolean'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type Game = {
   __typename?: 'Game';
   id: Scalars['Int'];
   title: Scalars['String'];
-  author: Scalars['String'];
-  year: Scalars['Float'];
-  shortDescription: Scalars['String'];
-  longDescription: Scalars['String'];
-  thumbnail: Scalars['String'];
-  banner: Scalars['String'];
-  points: Scalars['Float'];
+  author?: Maybe<Scalars['String']>;
+  year?: Maybe<Scalars['Float']>;
+  shortDescription?: Maybe<Scalars['String']>;
+  longDescription?: Maybe<Scalars['String']>;
+  thumbnail?: Maybe<Scalars['String']>;
+  banner?: Maybe<Scalars['String']>;
+  points: Scalars['Int'];
   submitterId: Scalars['Float'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -58,29 +74,41 @@ export type Post = {
   title: Scalars['String'];
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Int'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  isSubmitter: Scalars['Boolean'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
-  createGame: Game;
-  updateGame?: Maybe<Game>;
-  deleteGame: Scalars['Boolean'];
-  createPost: Post;
-  updatePost?: Maybe<Post>;
-  deletePost: Scalars['Boolean'];
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  createGame: GameResponse;
+  updateGame?: Maybe<Game>;
+  deleteGame: Scalars['Boolean'];
+  createPost: Post;
+  updatePost?: Maybe<Post>;
+  deletePost: Scalars['Boolean'];
+};
+
+
+export type MutationChangePasswordArgs = {
+  newPassword: Scalars['String'];
+  token: Scalars['String'];
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
+};
+
+
+export type MutationRegisterArgs = {
+  options: UsernamePasswordInput;
+};
+
+
+export type MutationLoginArgs = {
+  password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
 };
 
 
@@ -115,38 +143,6 @@ export type MutationDeletePostArgs = {
   id: Scalars['Float'];
 };
 
-
-export type MutationChangePasswordArgs = {
-  newPassword: Scalars['String'];
-  token: Scalars['String'];
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type MutationRegisterArgs = {
-  options: UsernamePasswordInput;
-};
-
-
-export type MutationLoginArgs = {
-  password: Scalars['String'];
-  usernameOrEmail: Scalars['String'];
-};
-
-export type GameInput = {
-  title: Scalars['String'];
-  author?: Maybe<Scalars['String']>;
-  year?: Maybe<Scalars['Float']>;
-  shortDescription?: Maybe<Scalars['String']>;
-  longDescription?: Maybe<Scalars['String']>;
-  thumbnail?: Maybe<Scalars['String']>;
-  banner?: Maybe<Scalars['String']>;
-};
-
 export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<FieldError>>;
@@ -163,6 +159,22 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type GameResponse = {
+  __typename?: 'GameResponse';
+  errors?: Maybe<Array<FieldError>>;
+  game?: Maybe<Game>;
+};
+
+export type GameInput = {
+  title: Scalars['String'];
+  author?: Maybe<Scalars['String']>;
+  year?: Maybe<Scalars['Float']>;
+  shortDescription?: Maybe<Scalars['String']>;
+  longDescription?: Maybe<Scalars['String']>;
+  thumbnail?: Maybe<Scalars['String']>;
+  banner?: Maybe<Scalars['String']>;
 };
 
 export type RegularErrorFragment = (
@@ -213,8 +225,14 @@ export type CreateGameMutationVariables = Exact<{
 export type CreateGameMutation = (
   { __typename?: 'Mutation' }
   & { createGame: (
-    { __typename?: 'Game' }
-    & RegularGameFragment
+    { __typename?: 'GameResponse' }
+    & { game?: Maybe<(
+      { __typename?: 'Game' }
+      & RegularGameFragment
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & RegularErrorFragment
+    )>> }
   ) }
 );
 
@@ -261,6 +279,20 @@ export type RegisterMutation = (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
   ) }
+);
+
+export type GamesQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GamesQuery = (
+  { __typename?: 'Query' }
+  & { games: Array<(
+    { __typename?: 'Game' }
+    & RegularGameFragment
+  )> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -334,10 +366,16 @@ export function useChangePasswordMutation() {
 export const CreateGameDocument = gql`
     mutation CreateGame($input: GameInput!) {
   createGame(input: $input) {
-    ...RegularGame
+    game {
+      ...RegularGame
+    }
+    errors {
+      ...RegularError
+    }
   }
 }
-    ${RegularGameFragmentDoc}`;
+    ${RegularGameFragmentDoc}
+${RegularErrorFragmentDoc}`;
 
 export function useCreateGameMutation() {
   return Urql.useMutation<CreateGameMutation, CreateGameMutationVariables>(CreateGameDocument);
@@ -381,6 +419,17 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const GamesDocument = gql`
+    query Games($limit: Int!, $cursor: String) {
+  games(limit: $limit, cursor: $cursor) {
+    ...RegularGame
+  }
+}
+    ${RegularGameFragmentDoc}`;
+
+export function useGamesQuery(options: Omit<Urql.UseQueryArgs<GamesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GamesQuery>({ query: GamesDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {

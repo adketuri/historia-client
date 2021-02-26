@@ -4,6 +4,7 @@ import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { InputField } from "../components/InputField";
+import { Layout } from "../components/Layout";
 import { NavBar } from "../components/NavBar";
 import { Wrapper } from "../components/Wrapper";
 import { useForgotPasswordMutation } from "../generated/graphql";
@@ -17,35 +18,28 @@ export const ForgotPassword: React.FC<{}> = ({}) => {
   const [, forgotPassword] = useForgotPasswordMutation();
 
   return (
-    <>
-      <NavBar />
-      <Wrapper variant="small">
-        <Formik
-          initialValues={{ email: "" }}
-          onSubmit={async (values, { setErrors }) => {
-            await forgotPassword(values);
-            setComplete(true);
-          }}
-        >
-          {({ isSubmitting }) =>
-            complete ? (
-              <Box>Check your email!</Box>
-            ) : (
-              <Form>
-                <InputField name="email" placeholder="Email" label="Email" />
-                <Button
-                  type="submit"
-                  isLoading={isSubmitting}
-                  colorScheme="teal"
-                >
-                  Help Me!
-                </Button>
-              </Form>
-            )
-          }
-        </Formik>
-      </Wrapper>
-    </>
+    <Layout variant="small">
+      <Formik
+        initialValues={{ email: "" }}
+        onSubmit={async (values, { setErrors }) => {
+          await forgotPassword(values);
+          setComplete(true);
+        }}
+      >
+        {({ isSubmitting }) =>
+          complete ? (
+            <Box>Check your email!</Box>
+          ) : (
+            <Form>
+              <InputField name="email" placeholder="Email" label="Email" />
+              <Button type="submit" isLoading={isSubmitting} colorScheme="teal">
+                Help Me!
+              </Button>
+            </Form>
+          )
+        }
+      </Formik>
+    </Layout>
   );
 };
 

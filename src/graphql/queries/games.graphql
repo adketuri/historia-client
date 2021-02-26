@@ -1,0 +1,5 @@
+query Games($limit: Int!, $cursor: String) {
+  games(limit: $limit, cursor: $cursor) {
+    ...RegularGame
+  }
+}

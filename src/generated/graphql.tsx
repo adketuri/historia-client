@@ -17,7 +17,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
-  games: Array<Game>;
+  games: PaginatedGames;
   game?: Maybe<Game>;
   hello: Scalars['String'];
   posts: Array<Post>;
@@ -48,6 +48,12 @@ export type User = {
   isSubmitter: Scalars['Boolean'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type PaginatedGames = {
+  __typename?: 'PaginatedGames';
+  games: Array<Game>;
+  hasMore: Scalars['Boolean'];
 };
 
 export type Game = {
@@ -184,7 +190,7 @@ export type RegularErrorFragment = (
 
 export type RegularGameFragment = (
   { __typename?: 'Game' }
-  & Pick<Game, 'id' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner'>
+  & Pick<Game, 'id' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'createdAt' | 'updatedAt'>
 );
 
 export type RegularUserFragment = (
@@ -289,10 +295,14 @@ export type GamesQueryVariables = Exact<{
 
 export type GamesQuery = (
   { __typename?: 'Query' }
-  & { games: Array<(
-    { __typename?: 'Game' }
-    & RegularGameFragment
-  )> }
+  & { games: (
+    { __typename?: 'PaginatedGames' }
+    & Pick<PaginatedGames, 'hasMore'>
+    & { games: Array<(
+      { __typename?: 'Game' }
+      & RegularGameFragment
+    )> }
+  ) }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -327,6 +337,8 @@ export const RegularGameFragmentDoc = gql`
   longDescription
   thumbnail
   banner
+  createdAt
+  updatedAt
 }
     `;
 export const RegularUserFragmentDoc = gql`
@@ -423,7 +435,10 @@ export function useRegisterMutation() {
 export const GamesDocument = gql`
     query Games($limit: Int!, $cursor: String) {
   games(limit: $limit, cursor: $cursor) {
-    ...RegularGame
+    hasMore
+    games {
+      ...RegularGame
+    }
   }
 }
     ${RegularGameFragmentDoc}`;

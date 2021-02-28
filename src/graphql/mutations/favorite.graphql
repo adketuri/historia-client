@@ -1,0 +1,3 @@
+mutation favorite($gameId: Int!) {
+  favorite(gameId: $gameId)
+}

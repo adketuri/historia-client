@@ -1,28 +1,30 @@
+import { StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   Heading,
+  IconButton,
   Link,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
-import { title } from "process";
 import React, { useState } from "react";
 import { Layout } from "../components/Layout";
-import { useGamesQuery, usePostsQuery } from "../generated/graphql";
+import { useFavoriteMutation, useGamesQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
+
+export const GAME_FETCH_LIMIT = 20;
 
 const Index = () => {
   const [variables, setVariables] = useState({
-    limit: 20,
+    limit: GAME_FETCH_LIMIT,
     cursor: null as null | string,
   });
-  const [{ data, fetching }] = useGamesQuery({
-    variables,
-  });
+  const [{ data, fetching }] = useGamesQuery({ variables });
+  const [{}, favorite] = useFavoriteMutation();
   return (
     <Layout>
       <NextLink href="/games/submit">
@@ -35,8 +37,17 @@ const Index = () => {
         <VStack spacing={8}>
           {data.games.games.map((g) => (
             <Box p={5} shadow="md" borderWidth="1px">
+              <Text>{g.favoriteCount}</Text>
+              <IconButton
+                onClick={() => {
+                  favorite({ gameId: g.id });
+                }}
+                aria-label="Favorite"
+                icon={<StarIcon />}
+              />
               <Heading fontSize="xl">{g.title}</Heading>
               <Text mt={4}>{g.shortDescription}</Text>
+              <Text mt={4}>Submitted by {g.submitter.username}</Text>
             </Box>
           ))}
         </VStack>

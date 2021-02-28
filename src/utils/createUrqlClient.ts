@@ -9,6 +9,7 @@ import {
 import { cacheExchange, NullArray, Resolver } from "@urql/exchange-graphcache";
 import { updateQueryTyped } from "./updateQueryTyped";
 import { stringifyVariables } from "@urql/core";
+import { GAME_FETCH_LIMIT } from "../pages";
 
 export const createUrqlClient = (ssrExchange: any) => ({
   url: "http://localhost:4000/graphql",
@@ -25,6 +26,15 @@ export const createUrqlClient = (ssrExchange: any) => ({
       },
       updates: {
         Mutation: {
+          createGame: (_result, args, cache, info) => {
+            const allFields = cache.inspectFields("Query");
+            const fieldInfos = allFields.filter(
+              (info) => info.fieldName === "games"
+            );
+            fieldInfos.forEach((fi) => {
+              cache.invalidate("Query", "games", fi.arguments || {});
+            });
+          },
           logout: (_result, args, cache, info) => {
             updateQueryTyped<LogoutMutation, MeQuery>(
               cache,
@@ -85,11 +95,8 @@ export interface PaginationParams {
 export const cursorPagination = (): Resolver => {
   return (_parent, fieldArgs, cache, info) => {
     const { parentKey: entityKey, fieldName } = info;
-    console.log(entityKey, fieldName);
 
     const allFields = cache.inspectFields(entityKey);
-    console.log(allFields);
-
     const fieldInfos = allFields.filter((info) => info.fieldName === fieldName);
     const size = fieldInfos.length;
     if (size === 0) {

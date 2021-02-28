@@ -9,4 +9,9 @@ fragment RegularGame on Game {
   banner
   createdAt
   updatedAt
+  submitter {
+    id
+    username
+  }
+  favoriteCount
 }

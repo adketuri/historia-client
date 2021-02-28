@@ -44,16 +44,12 @@ export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
   username: Scalars['String'];
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   isSubmitter: Scalars['Boolean'];
+  submissions: Array<Game>;
+  favorites: Array<Favorite>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-};
-
-export type PaginatedGames = {
-  __typename?: 'PaginatedGames';
-  games: Array<Game>;
-  hasMore: Scalars['Boolean'];
 };
 
 export type Game = {
@@ -66,10 +62,26 @@ export type Game = {
   longDescription?: Maybe<Scalars['String']>;
   thumbnail?: Maybe<Scalars['String']>;
   banner?: Maybe<Scalars['String']>;
-  points: Scalars['Int'];
   submitterId: Scalars['Float'];
+  submitter: User;
+  favoriteCount: Scalars['Int'];
+  favorites: Array<Favorite>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type Favorite = {
+  __typename?: 'Favorite';
+  userId: Scalars['Float'];
+  user: Array<User>;
+  gameId: Scalars['Float'];
+  game: Array<Game>;
+};
+
+export type PaginatedGames = {
+  __typename?: 'PaginatedGames';
+  games: Array<Game>;
+  hasMore: Scalars['Boolean'];
 };
 
 export type Post = {
@@ -87,6 +99,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  favorite: Scalars['Boolean'];
   createGame: GameResponse;
   updateGame?: Maybe<Game>;
   deleteGame: Scalars['Boolean'];
@@ -115,6 +128,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationFavoriteArgs = {
+  gameId: Scalars['Int'];
 };
 
 
@@ -190,7 +208,11 @@ export type RegularErrorFragment = (
 
 export type RegularGameFragment = (
   { __typename?: 'Game' }
-  & Pick<Game, 'id' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'createdAt' | 'updatedAt'>
+  & Pick<Game, 'id' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'createdAt' | 'updatedAt' | 'favoriteCount'>
+  & { submitter: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  ) }
 );
 
 export type RegularUserFragment = (
@@ -240,6 +262,16 @@ export type CreateGameMutation = (
       & RegularErrorFragment
     )>> }
   ) }
+);
+
+export type FavoriteMutationVariables = Exact<{
+  gameId: Scalars['Int'];
+}>;
+
+
+export type FavoriteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'favorite'>
 );
 
 export type ForgotPasswordMutationVariables = Exact<{
@@ -339,6 +371,11 @@ export const RegularGameFragmentDoc = gql`
   banner
   createdAt
   updatedAt
+  submitter {
+    id
+    username
+  }
+  favoriteCount
 }
     `;
 export const RegularUserFragmentDoc = gql`
@@ -391,6 +428,15 @@ ${RegularErrorFragmentDoc}`;
 
 export function useCreateGameMutation() {
   return Urql.useMutation<CreateGameMutation, CreateGameMutationVariables>(CreateGameDocument);
+};
+export const FavoriteDocument = gql`
+    mutation favorite($gameId: Int!) {
+  favorite(gameId: $gameId)
+}
+    `;
+
+export function useFavoriteMutation() {
+  return Urql.useMutation<FavoriteMutation, FavoriteMutationVariables>(FavoriteDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {

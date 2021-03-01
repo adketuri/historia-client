@@ -7,6 +7,7 @@ fragment RegularGame on Game {
   longDescription
   thumbnail
   banner
+  favorited
   createdAt
   updatedAt
   submitter {

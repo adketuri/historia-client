@@ -46,7 +46,7 @@ export type User = {
   email?: Maybe<Scalars['String']>;
   isSubmitter: Scalars['Boolean'];
   submissions: Array<Game>;
-  favorites: Array<Favorite>;
+  favorites: Array<Game>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -65,17 +65,8 @@ export type Game = {
   submitter: User;
   favorited: Scalars['Boolean'];
   favoriteCount: Scalars['Int'];
-  favorites: Array<Favorite>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-};
-
-export type Favorite = {
-  __typename?: 'Favorite';
-  userId: Scalars['Float'];
-  user: Array<User>;
-  gameId: Scalars['Float'];
-  game: Array<Game>;
 };
 
 export type PaginatedGames = {
@@ -209,7 +200,7 @@ export type RegularErrorFragment = (
 
 export type RegularGameFragment = (
   { __typename?: 'Game' }
-  & Pick<Game, 'id' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'createdAt' | 'updatedAt' | 'favoriteCount'>
+  & Pick<Game, 'id' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'favorited' | 'createdAt' | 'updatedAt' | 'favoriteCount'>
   & { submitter: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -371,6 +362,7 @@ export const RegularGameFragmentDoc = gql`
   longDescription
   thumbnail
   banner
+  favorited
   createdAt
   updatedAt
   submitter {

@@ -1,23 +1,17 @@
-import { StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   Heading,
-  IconButton,
   Link,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React, { useState } from "react";
+import React from "react";
+import { FavoriteButton } from "../components/FavoriteButton";
 import { Layout } from "../components/Layout";
-import {
-  GamesQuery,
-  PostsQuery,
-  useFavoriteMutation,
-  useGamesQuery,
-} from "../generated/graphql";
+import { useFavoriteMutation, useGamesQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
 
 const Index = () => {
@@ -40,15 +34,8 @@ const Index = () => {
       ) : (
         <VStack spacing={8}>
           {data.games.games.map((g) => (
-            <Box p={5} shadow="md" borderWidth="1px">
-              <Text>{g.favoriteCount}</Text>
-              <IconButton
-                onClick={() => {
-                  favorite({ variables: { gameId: g.id, add: true } });
-                }}
-                aria-label="Favorite"
-                icon={<StarIcon />}
-              />
+            <Box p={5} shadow="md" borderWidth="1px" key={g.id}>
+              <FavoriteButton game={g} />
               <Heading fontSize="xl">{g.title}</Heading>
               <Text mt={4}>{g.shortDescription}</Text>
               <Text mt={4}>Submitted by {g.submitter.username}</Text>

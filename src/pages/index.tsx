@@ -9,22 +9,26 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
 import React, { useState } from "react";
 import { Layout } from "../components/Layout";
-import { useFavoriteMutation, useGamesQuery } from "../generated/graphql";
-import { createUrqlClient } from "../utils/createUrqlClient";
-
-export const GAME_FETCH_LIMIT = 20;
+import {
+  GamesQuery,
+  PostsQuery,
+  useFavoriteMutation,
+  useGamesQuery,
+} from "../generated/graphql";
+import { withApollo } from "../utils/withApollo";
 
 const Index = () => {
-  const [variables, setVariables] = useState({
-    limit: GAME_FETCH_LIMIT,
-    cursor: null as null | string,
+  const { data, error, loading, fetchMore, variables } = useGamesQuery({
+    variables: {
+      limit: 20,
+      cursor: null as null | string,
+    },
+    notifyOnNetworkStatusChange: true,
   });
-  const [{ data, fetching }] = useGamesQuery({ variables });
-  const [{}, favorite] = useFavoriteMutation();
+  const [favorite] = useFavoriteMutation();
   return (
     <Layout>
       <NextLink href="/games/submit">
@@ -40,7 +44,7 @@ const Index = () => {
               <Text>{g.favoriteCount}</Text>
               <IconButton
                 onClick={() => {
-                  favorite({ gameId: g.id });
+                  favorite({ variables: { gameId: g.id, add: true } });
                 }}
                 aria-label="Favorite"
                 icon={<StarIcon />}
@@ -56,12 +60,31 @@ const Index = () => {
         <Button
           m="auto"
           my={8}
-          isLoading={fetching}
+          isLoading={loading}
           onClick={() => {
             if (!data) return;
-            setVariables({
-              limit: variables.limit,
-              cursor: data.games.games[data.games.games.length - 1].createdAt,
+            fetchMore({
+              variables: {
+                limit: variables?.limit,
+                cursor: data.games.games[data.games.games.length - 1].createdAt,
+              },
+              // updateQuery: (
+              //   previousValues,
+              //   { fetchMoreResult }: { fetchMoreResult: GamesQuery }
+              // ): GamesQuery => {
+              //   if (!fetchMoreResult) return previousValues as GamesQuery;
+              //   return {
+              //     __typename: "Query",
+              //     games: {
+              //       __typename: "PaginatedGames",
+              //       hasMore: (fetchMoreResult as GamesQuery).games.hasMore,
+              //       games: [
+              //         ...(previousValues as GamesQuery).games.games,
+              //         ...(fetchMoreResult as GamesQuery).games.games,
+              //       ],
+              //     },
+              //   };
+              // },
             });
           }}
         >
@@ -76,4 +99,4 @@ const Index = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Index);
+export default withApollo({ ssr: true })(Index);

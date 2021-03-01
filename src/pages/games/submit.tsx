@@ -9,14 +9,15 @@ import { useCreateGameMutation } from "../../generated/graphql";
 import { useIsAuth } from "../../hooks/useIsAuth";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 import { toErrorMap } from "../../utils/toErrorMap";
+import { withApollo } from "../../utils/withApollo";
 
 interface SubmitGameProps {}
 
 const SubmitGame: React.FC<{}> = ({}) => {
-  useIsAuth();
+  const submitterId = useIsAuth();
 
   const router = useRouter();
-  const [, createGame] = useCreateGameMutation();
+  const [createGame] = useCreateGameMutation();
 
   return (
     <Layout>
@@ -24,9 +25,15 @@ const SubmitGame: React.FC<{}> = ({}) => {
         initialValues={{ title: "" }}
         onSubmit={async (values, { setErrors }) => {
           console.log(values);
-          const response = await createGame({ input: values });
-          if (response.data?.createGame.errors) {
-            setErrors(toErrorMap(response.data.createGame.errors));
+          const { errors } = await createGame({
+            variables: { input: values },
+            update: (cache) => {
+              cache.evict({ fieldName: "games:{}" });
+            },
+          });
+          if (errors) {
+            console.log("Errors", errors);
+            // setErrors(toErrorMap(errors));
           } else {
             router.push("/");
           }
@@ -68,4 +75,4 @@ const SubmitGame: React.FC<{}> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(SubmitGame);
+export default withApollo({ ssr: false })(SubmitGame);

@@ -2,8 +2,10 @@ import * as React from "react";
 import { Game, RegularGameFragment } from "../generated/graphql";
 import { Layout } from "./Layout";
 import {
+  Badge,
   Box,
   Button,
+  Divider,
   Flex,
   Heading,
   Image,
@@ -44,9 +46,15 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <Heading color="gray.200" as="h2" size="md" mb="5px">
               {game.author}
             </Heading>
-            <Heading color="gray.200" as="h2" size="md" mb="25px">
+            <Heading color="gray.200" as="h2" size="md" mb="15px">
               {game.year}
             </Heading>
+            <Badge mb="15px" mr="5px">
+              Fantasy
+            </Badge>
+            <Badge mb="15px" mr="5px">
+              Adventure
+            </Badge>
           </Box>
         </Flex>
       </Box>
@@ -56,24 +64,28 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
     <>
       <Layout header={header}>
         <Flex>
-          <Box
-            zIndex="1"
-            flex="1"
-            h="200px"
-            mt="-100px"
-            bgColor="red"
-            mx="10px"
-          >
+          <Box zIndex="1" flex="1" h="200px" mt="-100px" mx="10px">
             <Image
               src={game.thumbnail || "https://i.imgur.com/PffO0zx.png"}
               objectFit="cover"
               height="100%"
             />
-            <Spacer h="20px" />
+            <Text my="20px" fontSize="xs">
+              {game.shortDescription}
+            </Text>
             <FavoriteButton game={game} preset="lg" />
           </Box>
           <Box flex="3">
+            <Heading as="h1" size="md" mb="10px">
+              About
+            </Heading>
+            <Divider w="40px" mb="10px" />
             <Text>{game.longDescription}</Text>
+            <Heading as="h1" size="md" my="10px">
+              Screenshots
+            </Heading>
+            <Divider w="40px" mb="10px" />
+            <Text mt="20px">{`Submitted by ${game.submitter.username}`}</Text>
           </Box>
         </Flex>
       </Layout>

@@ -3,13 +3,14 @@ import {
   RegularGameFragment,
   useFavoriteMutation,
 } from "../generated/graphql";
-import { Text, IconButton } from "@chakra-ui/react";
+import { Text, IconButton, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { StarIcon } from "@chakra-ui/icons";
 import gql from "graphql-tag";
 
 interface FavoriteButtonProps {
   game: RegularGameFragment;
+  preset: "sm" | "lg";
 }
 
 export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
@@ -17,8 +18,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
   const [favorite, { loading }] = useFavoriteMutation();
   return (
     <>
-      <Text>{game.favoriteCount}</Text>
-      <IconButton
+      <Button
         onClick={async () => {
           await favorite({
             variables: { gameId: game.id, add: !game.favorited },
@@ -55,10 +55,16 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
           });
         }}
         disabled={loading}
+        w="100%"
         colorScheme={game.favorited ? "yellow" : "gray"}
         aria-label="Favorite"
-        icon={<StarIcon />}
-      />
+        leftIcon={<StarIcon />}
+      >
+        {game.favorited ? "Favorited" : "Favorite"}
+      </Button>
+      <Text align="center" mt="20px">
+        {game.favoriteCount} Favorite{game.favoriteCount !== 1 && "s"}
+      </Text>
     </>
   );
 };

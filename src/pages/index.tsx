@@ -35,8 +35,12 @@ const Index = () => {
         <VStack spacing={8}>
           {data.games.games.map((g) => (
             <Box p={5} shadow="md" borderWidth="1px" key={g.id}>
-              <FavoriteButton game={g} />
-              <Heading fontSize="xl">{g.title}</Heading>
+              <FavoriteButton game={g} preset="lg" />
+              <Heading fontSize="xl">
+                <NextLink href={`games/${g.slug}`}>
+                  <Link>{g.title || "Untitled"}</Link>
+                </NextLink>
+              </Heading>
               <Text mt={4}>{g.shortDescription}</Text>
               <Text mt={4}>Submitted by {g.submitter.username}</Text>
             </Box>

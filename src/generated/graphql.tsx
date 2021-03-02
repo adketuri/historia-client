@@ -31,7 +31,8 @@ export type QueryGamesArgs = {
 
 
 export type QueryGameArgs = {
-  id: Scalars['Float'];
+  slug?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
 };
 
 
@@ -54,6 +55,7 @@ export type User = {
 export type Game = {
   __typename?: 'Game';
   id: Scalars['Int'];
+  slug: Scalars['String'];
   title: Scalars['String'];
   author?: Maybe<Scalars['String']>;
   year?: Maybe<Scalars['Float']>;
@@ -200,7 +202,7 @@ export type RegularErrorFragment = (
 
 export type RegularGameFragment = (
   { __typename?: 'Game' }
-  & Pick<Game, 'id' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'favorited' | 'createdAt' | 'updatedAt' | 'favoriteCount'>
+  & Pick<Game, 'id' | 'slug' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'favorited' | 'createdAt' | 'updatedAt' | 'favoriteCount'>
   & { submitter: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -312,6 +314,20 @@ export type RegisterMutation = (
   ) }
 );
 
+export type GameQueryVariables = Exact<{
+  id?: Maybe<Scalars['Int']>;
+  slug?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GameQuery = (
+  { __typename?: 'Query' }
+  & { game?: Maybe<(
+    { __typename?: 'Game' }
+    & RegularGameFragment
+  )> }
+);
+
 export type GamesQueryVariables = Exact<{
   limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
@@ -355,6 +371,7 @@ export type PostsQuery = (
 export const RegularGameFragmentDoc = gql`
     fragment RegularGame on Game {
   id
+  slug
   title
   author
   year
@@ -621,6 +638,40 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const GameDocument = gql`
+    query Game($id: Int, $slug: String) {
+  game(id: $id, slug: $slug) {
+    ...RegularGame
+  }
+}
+    ${RegularGameFragmentDoc}`;
+
+/**
+ * __useGameQuery__
+ *
+ * To run a query within a React component, call `useGameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGameQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGameQuery(baseOptions?: Apollo.QueryHookOptions<GameQuery, GameQueryVariables>) {
+        return Apollo.useQuery<GameQuery, GameQueryVariables>(GameDocument, baseOptions);
+      }
+export function useGameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GameQuery, GameQueryVariables>) {
+          return Apollo.useLazyQuery<GameQuery, GameQueryVariables>(GameDocument, baseOptions);
+        }
+export type GameQueryHookResult = ReturnType<typeof useGameQuery>;
+export type GameLazyQueryHookResult = ReturnType<typeof useGameLazyQuery>;
+export type GameQueryResult = Apollo.QueryResult<GameQuery, GameQueryVariables>;
 export const GamesDocument = gql`
     query Games($limit: Int!, $cursor: String) {
   games(limit: $limit, cursor: $cursor) {

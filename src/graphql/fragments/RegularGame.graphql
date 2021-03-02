@@ -1,5 +1,6 @@
 fragment RegularGame on Game {
   id
+  slug
   title
   author
   year

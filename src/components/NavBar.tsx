@@ -1,9 +1,18 @@
-import { Box, Button, Flex, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  color,
+  Flex,
+  Link,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
 import { useApolloClient } from "@apollo/client";
+import { ColorModeSwitcher } from "./ColorModeSwitcher";
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
@@ -47,9 +56,13 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     );
   }
 
+  const { colorMode } = useColorMode();
+  const bgColor = { light: "red.500", dark: "red.800" };
+
   return (
-    <Flex p={4} bg="tomato">
+    <Flex p={4} bg={bgColor[colorMode]}>
       <Box ml={"auto"}>{body}</Box>
+      <ColorModeSwitcher justifySelf="flex-end" />
     </Flex>
   );
 };

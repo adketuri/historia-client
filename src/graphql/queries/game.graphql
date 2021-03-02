@@ -1,0 +1,5 @@
+query Game($id: Int, $slug: String) {
+  game(id: $id, slug: $slug) {
+    ...RegularGame
+  }
+}

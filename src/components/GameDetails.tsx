@@ -13,6 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FavoriteButton } from "./FavoriteButton";
+import { TextSection } from "./TextSection";
 
 interface GameDetailsProps {
   game: RegularGameFragment;
@@ -38,8 +39,8 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
       />
       <Box w="100%" position="absolute" bottom="0px">
         <Flex mx="auto" maxW="800px">
-          <Spacer flex="1" />
-          <Box flex="3" ml="20px">
+          <Spacer flex="1" mx="20px" />
+          <Box flex="3">
             <Heading color="gray.100" as="h1" size="lg" mb="5px">
               {game.title}
             </Heading>
@@ -64,27 +65,20 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
     <>
       <Layout header={header}>
         <Flex>
-          <Box zIndex="1" flex="1" h="200px" mt="-100px" mx="10px">
+          <Box zIndex="1" flex="1" h="200px" mt="-100px" mx="20px">
             <Image
               src={game.thumbnail || "https://i.imgur.com/PffO0zx.png"}
               objectFit="cover"
               height="100%"
+              mb="20px"
             />
-            <Text my="20px" fontSize="xs">
-              {game.shortDescription}
-            </Text>
             <FavoriteButton game={game} preset="lg" />
           </Box>
           <Box flex="3">
-            <Heading as="h1" size="md" mb="10px">
-              About
-            </Heading>
-            <Divider w="40px" mb="10px" />
-            <Text>{game.longDescription}</Text>
-            <Heading as="h1" size="md" my="10px">
-              Screenshots
-            </Heading>
-            <Divider w="40px" mb="10px" />
+            <TextSection heading="About">{game.longDescription}</TextSection>
+            <TextSection heading="Screenshots">
+              <Image src={"https://i.imgur.com/PffO0zx.png"} />
+            </TextSection>
             <Text mt="20px">{`Submitted by ${game.submitter.username}`}</Text>
           </Box>
         </Flex>

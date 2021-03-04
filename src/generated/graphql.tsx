@@ -16,11 +16,17 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
+  findGames: Array<Game>;
   games: PaginatedGames;
   game?: Maybe<Game>;
   hello: Scalars['String'];
   posts: Array<Post>;
   post?: Maybe<Post>;
+};
+
+
+export type QueryFindGamesArgs = {
+  search: Scalars['String'];
 };
 
 
@@ -312,6 +318,19 @@ export type RegisterMutation = (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
   ) }
+);
+
+export type FindGamesQueryVariables = Exact<{
+  search: Scalars['String'];
+}>;
+
+
+export type FindGamesQuery = (
+  { __typename?: 'Query' }
+  & { findGames: Array<(
+    { __typename?: 'Game' }
+    & RegularGameFragment
+  )> }
 );
 
 export type GameQueryVariables = Exact<{
@@ -638,6 +657,39 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const FindGamesDocument = gql`
+    query FindGames($search: String!) {
+  findGames(search: $search) {
+    ...RegularGame
+  }
+}
+    ${RegularGameFragmentDoc}`;
+
+/**
+ * __useFindGamesQuery__
+ *
+ * To run a query within a React component, call `useFindGamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindGamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindGamesQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useFindGamesQuery(baseOptions: Apollo.QueryHookOptions<FindGamesQuery, FindGamesQueryVariables>) {
+        return Apollo.useQuery<FindGamesQuery, FindGamesQueryVariables>(FindGamesDocument, baseOptions);
+      }
+export function useFindGamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindGamesQuery, FindGamesQueryVariables>) {
+          return Apollo.useLazyQuery<FindGamesQuery, FindGamesQueryVariables>(FindGamesDocument, baseOptions);
+        }
+export type FindGamesQueryHookResult = ReturnType<typeof useFindGamesQuery>;
+export type FindGamesLazyQueryHookResult = ReturnType<typeof useFindGamesLazyQuery>;
+export type FindGamesQueryResult = Apollo.QueryResult<FindGamesQuery, FindGamesQueryVariables>;
 export const GameDocument = gql`
     query Game($id: Int, $slug: String) {
   game(id: $id, slug: $slug) {

@@ -1,0 +1,5 @@
+query FindGames($search: String!) {
+  findGames(search: $search) {
+    ...RegularGame
+  }
+}

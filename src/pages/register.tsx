@@ -1,14 +1,10 @@
-import { Button, Spacer } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
-import { NavBar } from "../components/NavBar";
-import { Wrapper } from "../components/Wrapper";
 import { useRegisterMutation } from "../generated/graphql";
-import { createUrqlClient } from "../utils/createUrqlClient";
 import { toErrorMap } from "../utils/toErrorMap";
 import { withApollo } from "../utils/withApollo";
 

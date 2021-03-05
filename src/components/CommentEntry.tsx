@@ -1,7 +1,10 @@
-import { Box, Button, Input } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import * as React from "react";
-import { useCreatePostMutation } from "../generated/graphql";
+import {
+  RegularGameFragmentDoc,
+  useCreatePostMutation,
+} from "../generated/graphql";
 import { InputField } from "./InputField";
 
 interface CommentEntryProps {
@@ -19,10 +22,21 @@ export const CommentEntry: React.FC<CommentEntryProps> = ({ gameId }) => {
           try {
             await createPost({
               variables: { gameId, body: values.body },
-              update: (cache) => {
-                console.log("cache: ", cache);
-                cache.evict({ fieldName: "posts:{}" });
-                cache.gc();
+              update: (cache, { data: { createPost } }) => {
+                console.log(cache);
+                const data: any = cache.readFragment({
+                  id: `Game:${gameId}`,
+                  fragmentName: "RegularGame",
+                  fragment: RegularGameFragmentDoc,
+                });
+                const newData = { ...data };
+                newData.posts = [...data.posts, createPost];
+                cache.writeFragment({
+                  id: `Game:${gameId}`,
+                  fragmentName: "RegularGame",
+                  fragment: RegularGameFragmentDoc,
+                  data: newData,
+                });
               },
             });
             resetForm({ values: { body: "" } });

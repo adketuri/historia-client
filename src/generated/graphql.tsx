@@ -53,6 +53,7 @@ export type User = {
   email?: Maybe<Scalars['String']>;
   isSubmitter: Scalars['Boolean'];
   submissions: Array<Game>;
+  posts?: Maybe<Array<Post>>;
   favorites: Array<Game>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -73,14 +74,9 @@ export type Game = {
   submitter: User;
   favorited: Scalars['Boolean'];
   favoriteCount: Scalars['Int'];
+  posts?: Maybe<Array<Post>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-};
-
-export type PaginatedGames = {
-  __typename?: 'PaginatedGames';
-  games: Array<Game>;
-  hasMore: Scalars['Boolean'];
 };
 
 export type Post = {
@@ -88,7 +84,16 @@ export type Post = {
   id: Scalars['Int'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  title: Scalars['String'];
+  body: Scalars['String'];
+  game: Game;
+  authorId: Scalars['Float'];
+  author: User;
+};
+
+export type PaginatedGames = {
+  __typename?: 'PaginatedGames';
+  games: Array<Game>;
+  hasMore: Scalars['Boolean'];
 };
 
 export type Mutation = {
@@ -153,12 +158,13 @@ export type MutationDeleteGameArgs = {
 
 
 export type MutationCreatePostArgs = {
-  title: Scalars['String'];
+  body: Scalars['String'];
+  gameId: Scalars['Int'];
 };
 
 
 export type MutationUpdatePostArgs = {
-  title: Scalars['String'];
+  body: Scalars['String'];
   id: Scalars['Float'];
 };
 
@@ -212,6 +218,18 @@ export type RegularGameFragment = (
   & { submitter: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
+  ), posts?: Maybe<Array<(
+    { __typename?: 'Post' }
+    & RegularPostFragment
+  )>> }
+);
+
+export type RegularPostFragment = (
+  { __typename?: 'Post' }
+  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+  & { author: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
   ) }
 );
 
@@ -261,6 +279,20 @@ export type CreateGameMutation = (
       { __typename?: 'FieldError' }
       & RegularErrorFragment
     )>> }
+  ) }
+);
+
+export type CreatePostMutationVariables = Exact<{
+  gameId: Scalars['Int'];
+  body: Scalars['String'];
+}>;
+
+
+export type CreatePostMutation = (
+  { __typename?: 'Mutation' }
+  & { createPost: (
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'body'>
   ) }
 );
 
@@ -383,10 +415,26 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
   )> }
 );
 
+export const RegularPostFragmentDoc = gql`
+    fragment RegularPost on Post {
+  id
+  createdAt
+  updatedAt
+  body
+  author {
+    id
+    username
+  }
+}
+    `;
 export const RegularGameFragmentDoc = gql`
     fragment RegularGame on Game {
   id
@@ -405,9 +453,12 @@ export const RegularGameFragmentDoc = gql`
     id
     username
   }
+  posts {
+    ...RegularPost
+  }
   favoriteCount
 }
-    `;
+    ${RegularPostFragmentDoc}`;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
@@ -502,6 +553,40 @@ export function useCreateGameMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateGameMutationHookResult = ReturnType<typeof useCreateGameMutation>;
 export type CreateGameMutationResult = Apollo.MutationResult<CreateGameMutation>;
 export type CreateGameMutationOptions = Apollo.BaseMutationOptions<CreateGameMutation, CreateGameMutationVariables>;
+export const CreatePostDocument = gql`
+    mutation CreatePost($gameId: Int!, $body: String!) {
+  createPost(gameId: $gameId, body: $body) {
+    id
+    body
+  }
+}
+    `;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
+
+/**
+ * __useCreatePostMutation__
+ *
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+ *   variables: {
+ *      gameId: // value for 'gameId'
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
+        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, baseOptions);
+      }
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const FavoriteDocument = gql`
     mutation favorite($gameId: Int!, $add: Boolean!) {
   favorite(gameId: $gameId, add: $add)
@@ -799,7 +884,11 @@ export const PostsDocument = gql`
     id
     createdAt
     updatedAt
-    title
+    author {
+      id
+      username
+    }
+    body
   }
 }
     `;

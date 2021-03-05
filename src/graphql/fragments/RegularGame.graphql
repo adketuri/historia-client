@@ -15,5 +15,8 @@ fragment RegularGame on Game {
     id
     username
   }
+  posts {
+    ...RegularPost
+  }
   favoriteCount
 }

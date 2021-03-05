@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FavoriteButton } from "./FavoriteButton";
 import { TextSection } from "./TextSection";
+import { CommentList } from "./CommentList";
 
 interface GameDetailsProps {
   game: RegularGameFragment;
@@ -78,6 +79,9 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <TextSection heading="About">{game.longDescription}</TextSection>
             <TextSection heading="Screenshots">
               <Image src={"https://i.imgur.com/PffO0zx.png"} />
+            </TextSection>
+            <TextSection heading="Comments">
+              <CommentList posts={game.posts} gameId={game.id} />
             </TextSection>
             <Text mt="20px">{`Submitted by ${game.submitter.username}`}</Text>
           </Box>

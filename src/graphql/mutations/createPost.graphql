@@ -1,0 +1,6 @@
+mutation CreatePost($gameId: Int!, $body: String!) {
+  createPost(gameId: $gameId, body: $body) {
+    id
+    body
+  }
+}

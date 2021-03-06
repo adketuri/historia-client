@@ -83,7 +83,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <TextSection heading="About">{game.longDescription}</TextSection>
             <TextSection heading="Screenshots">
               <Image src={"https://i.imgur.com/PffO0zx.png"} />
-              <Upload />
+              <Upload game={game} type="screenshots" />
             </TextSection>
             <TextSection heading="Comments">
               <CommentList posts={game.posts} gameId={game.id} />

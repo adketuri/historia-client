@@ -15,6 +15,9 @@ import {
 import { FavoriteButton } from "./FavoriteButton";
 import { TextSection } from "./TextSection";
 import { CommentList } from "./CommentList";
+import { Upload } from "./Upload";
+import { useRef } from "react";
+import { Form } from "formik";
 
 interface GameDetailsProps {
   game: RegularGameFragment;
@@ -62,6 +65,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
       </Box>
     </Box>
   );
+
   return (
     <>
       <Layout header={header}>
@@ -79,6 +83,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <TextSection heading="About">{game.longDescription}</TextSection>
             <TextSection heading="Screenshots">
               <Image src={"https://i.imgur.com/PffO0zx.png"} />
+              <Upload />
             </TextSection>
             <TextSection heading="Comments">
               <CommentList posts={game.posts} gameId={game.id} />

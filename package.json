@@ -23,7 +23,10 @@
     "next-urql": "^3.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-dropzone": "^11.3.1",
+    "react-dropzone-s3-uploader": "^1.1.0",
     "react-is": "^17.0.1",
+    "react-s3-uploader": "^5.0.0",
     "urql": "^2.0.1"
   },
   "license": "MIT",
@@ -34,6 +37,7 @@
     "@graphql-codegen/typescript-react-apollo": "^2.2.1",
     "@graphql-codegen/typescript-urql": "^2.0.3",
     "@types/node": "^14.14.31",
+    "@types/react-dropzone": "^5.1.0",
     "typescript": "^4.1.5"
   }
 }

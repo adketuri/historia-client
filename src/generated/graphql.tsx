@@ -55,6 +55,7 @@ export type User = {
   submissions: Array<Game>;
   posts?: Maybe<Array<Post>>;
   favorites: Array<Game>;
+  screenshots?: Maybe<Array<Screenshot>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -75,6 +76,7 @@ export type Game = {
   favorited: Scalars['Boolean'];
   favoriteCount: Scalars['Int'];
   posts?: Maybe<Array<Post>>;
+  screenshots?: Maybe<Array<Screenshot>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -86,8 +88,18 @@ export type Post = {
   updatedAt: Scalars['String'];
   body: Scalars['String'];
   game: Game;
-  authorId: Scalars['Float'];
   author: User;
+};
+
+export type Screenshot = {
+  __typename?: 'Screenshot';
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  url: Scalars['String'];
+  verified: Scalars['Boolean'];
+  game: Game;
+  submitter: User;
 };
 
 export type PaginatedGames = {
@@ -103,6 +115,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  createScreenshot: Screenshot;
   favorite: Scalars['Boolean'];
   createGame: GameResponse;
   updateGame?: Maybe<Game>;
@@ -132,6 +145,12 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationCreateScreenshotArgs = {
+  url: Scalars['String'];
+  gameId: Scalars['Int'];
 };
 
 
@@ -221,6 +240,9 @@ export type RegularGameFragment = (
   ), posts?: Maybe<Array<(
     { __typename?: 'Post' }
     & RegularPostFragment
+  )>>, screenshots?: Maybe<Array<(
+    { __typename?: 'Screenshot' }
+    & RegularScreenshotFragment
   )>> }
 );
 
@@ -231,6 +253,11 @@ export type RegularPostFragment = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
   ) }
+);
+
+export type RegularScreenshotFragment = (
+  { __typename?: 'Screenshot' }
+  & Pick<Screenshot, 'id' | 'createdAt' | 'updatedAt' | 'url' | 'verified'>
 );
 
 export type RegularUserFragment = (
@@ -292,7 +319,21 @@ export type CreatePostMutation = (
   { __typename?: 'Mutation' }
   & { createPost: (
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'body'>
+    & RegularPostFragment
+  ) }
+);
+
+export type CreateScreenshotMutationVariables = Exact<{
+  gameId: Scalars['Int'];
+  url: Scalars['String'];
+}>;
+
+
+export type CreateScreenshotMutation = (
+  { __typename?: 'Mutation' }
+  & { createScreenshot: (
+    { __typename?: 'Screenshot' }
+    & RegularScreenshotFragment
   ) }
 );
 
@@ -435,6 +476,15 @@ export const RegularPostFragmentDoc = gql`
   }
 }
     `;
+export const RegularScreenshotFragmentDoc = gql`
+    fragment RegularScreenshot on Screenshot {
+  id
+  createdAt
+  updatedAt
+  url
+  verified
+}
+    `;
 export const RegularGameFragmentDoc = gql`
     fragment RegularGame on Game {
   id
@@ -456,9 +506,13 @@ export const RegularGameFragmentDoc = gql`
   posts {
     ...RegularPost
   }
+  screenshots {
+    ...RegularScreenshot
+  }
   favoriteCount
 }
-    ${RegularPostFragmentDoc}`;
+    ${RegularPostFragmentDoc}
+${RegularScreenshotFragmentDoc}`;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
@@ -556,11 +610,10 @@ export type CreateGameMutationOptions = Apollo.BaseMutationOptions<CreateGameMut
 export const CreatePostDocument = gql`
     mutation CreatePost($gameId: Int!, $body: String!) {
   createPost(gameId: $gameId, body: $body) {
-    id
-    body
+    ...RegularPost
   }
 }
-    `;
+    ${RegularPostFragmentDoc}`;
 export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
 
 /**
@@ -587,6 +640,39 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const CreateScreenshotDocument = gql`
+    mutation CreateScreenshot($gameId: Int!, $url: String!) {
+  createScreenshot(gameId: $gameId, url: $url) {
+    ...RegularScreenshot
+  }
+}
+    ${RegularScreenshotFragmentDoc}`;
+export type CreateScreenshotMutationFn = Apollo.MutationFunction<CreateScreenshotMutation, CreateScreenshotMutationVariables>;
+
+/**
+ * __useCreateScreenshotMutation__
+ *
+ * To run a mutation, you first call `useCreateScreenshotMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateScreenshotMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createScreenshotMutation, { data, loading, error }] = useCreateScreenshotMutation({
+ *   variables: {
+ *      gameId: // value for 'gameId'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useCreateScreenshotMutation(baseOptions?: Apollo.MutationHookOptions<CreateScreenshotMutation, CreateScreenshotMutationVariables>) {
+        return Apollo.useMutation<CreateScreenshotMutation, CreateScreenshotMutationVariables>(CreateScreenshotDocument, baseOptions);
+      }
+export type CreateScreenshotMutationHookResult = ReturnType<typeof useCreateScreenshotMutation>;
+export type CreateScreenshotMutationResult = Apollo.MutationResult<CreateScreenshotMutation>;
+export type CreateScreenshotMutationOptions = Apollo.BaseMutationOptions<CreateScreenshotMutation, CreateScreenshotMutationVariables>;
 export const FavoriteDocument = gql`
     mutation favorite($gameId: Int!, $add: Boolean!) {
   favorite(gameId: $gameId, add: $add)

@@ -18,6 +18,7 @@ import { CommentList } from "./CommentList";
 import { Upload } from "./Upload";
 import { useRef } from "react";
 import { Form } from "formik";
+import { ScreenshotList } from "./ScreenshotList";
 
 interface GameDetailsProps {
   game: RegularGameFragment;
@@ -66,6 +67,8 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
     </Box>
   );
 
+  console.log(game);
+
   return (
     <>
       <Layout header={header}>
@@ -82,7 +85,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
           <Box flex="3">
             <TextSection heading="About">{game.longDescription}</TextSection>
             <TextSection heading="Screenshots">
-              <Image src={"https://i.imgur.com/PffO0zx.png"} />
+              <ScreenshotList screenshots={game.screenshots} />
               <Upload game={game} type="screenshots" />
             </TextSection>
             <TextSection heading="Comments">

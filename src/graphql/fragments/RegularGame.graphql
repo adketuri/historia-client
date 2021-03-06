@@ -18,5 +18,8 @@ fragment RegularGame on Game {
   posts {
     ...RegularPost
   }
+  screenshots {
+    ...RegularScreenshot
+  }
   favoriteCount
 }

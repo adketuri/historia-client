@@ -1,0 +1,7 @@
+fragment RegularScreenshot on Screenshot {
+  id
+  createdAt
+  updatedAt
+  url
+  verified
+}

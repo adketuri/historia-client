@@ -1,0 +1,5 @@
+mutation CreateScreenshot($gameId: Int!, $url: String!) {
+  createScreenshot(gameId: $gameId, url: $url) {
+    ...RegularScreenshot
+  }
+}

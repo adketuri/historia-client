@@ -52,6 +52,7 @@ export type User = {
   username: Scalars['String'];
   email?: Maybe<Scalars['String']>;
   isSubmitter: Scalars['Boolean'];
+  isAdmin: Scalars['Boolean'];
   submissions: Array<Game>;
   posts?: Maybe<Array<Post>>;
   favorites: Array<Game>;
@@ -262,7 +263,7 @@ export type RegularScreenshotFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
+  & Pick<User, 'id' | 'username' | 'isSubmitter' | 'isAdmin'>
 );
 
 export type RegularUserResponseFragment = (
@@ -517,6 +518,8 @@ export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
   username
+  isSubmitter
+  isAdmin
 }
     `;
 export const RegularErrorFragmentDoc = gql`

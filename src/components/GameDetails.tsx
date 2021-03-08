@@ -85,8 +85,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
           <Box flex="3">
             <TextSection heading="About">{game.longDescription}</TextSection>
             <TextSection heading="Screenshots">
-              <ScreenshotList screenshots={game.screenshots} />
-              <Upload game={game} type="screenshots" />
+              <ScreenshotList game={game} />
             </TextSection>
             <TextSection heading="Comments">
               <CommentList posts={game.posts} gameId={game.id} />

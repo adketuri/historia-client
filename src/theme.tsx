@@ -15,6 +15,17 @@ const breakpoints = createBreakpoints({
 // const color = { light: "black", dark: "white" };
 
 const theme = extendTheme({
+  styles: {
+    global: (props) => ({
+      "html, body": {
+        fontSize: "md",
+        bgColor: props.colorMode === "dark" ? "gray.800" : "gray.100", // this doesn't seem to work?
+      },
+      a: {
+        color: props.colorMode === "dark" ? "teal.300" : "teal.500",
+      },
+    }),
+  },
   components: {
     Link: {
       variants: {
@@ -28,6 +39,16 @@ const theme = extendTheme({
           color: props.colorMode === "dark" ? "pink.200" : "pink.700",
           fontWeight: "bold",
           fontSize: "xl",
+        }),
+        comment: (props) => ({
+          color: props.colorMode === "dark" ? "pink.200" : "pink.700",
+        }),
+        footerLink: (props) => ({
+          color: props.colorMode === "dark" ? "pink.500" : "pink.500",
+          _hover: {
+            color: props.colorMode === "dark" ? "pink.100" : "pink.100",
+            textDecoration: "none",
+          },
         }),
       },
     },
@@ -48,6 +69,15 @@ const theme = extendTheme({
           fontWeight: "bold",
           fontSize: "sm",
           color: props.colorMode === "dark" ? "gray.800" : "gray.100",
+        }),
+        footerHeading: (props) => ({
+          fontWeight: "bold",
+          fontSize: "sm",
+          color: "pink.100",
+        }),
+        footerContent: (props) => ({
+          fontSize: "sm",
+          color: "pink.500",
         }),
       },
     },

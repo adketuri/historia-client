@@ -2,6 +2,7 @@ import React from "react";
 import { Wrapper, WrapperVariant } from "./Wrapper";
 import { NavBar } from "./NavBar";
 import { Box, Flex, useColorMode } from "@chakra-ui/react";
+import { Footer } from "./Footer";
 
 interface LayoutProps {
   variant?: WrapperVariant;
@@ -18,10 +19,13 @@ export const Layout: React.FC<LayoutProps> = ({
   const color = { light: "black", dark: "white" };
 
   return (
-    <Box bg={bgColor[colorMode]} minH="100vh" color={color[colorMode]}>
+    <Flex direction="column" color={color[colorMode]} height="100vh">
       <NavBar />
-      {header}
-      <Wrapper variant={variant}>{children}</Wrapper>
-    </Box>
+      {header && <Box height="300px">{header}</Box>}
+      <Box flex={1} bg={bgColor[colorMode]}>
+        <Wrapper variant={variant}>{children}</Wrapper>
+      </Box>
+      <Footer />
+    </Flex>
   );
 };

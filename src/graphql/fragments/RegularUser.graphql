@@ -1,6 +1,19 @@
 fragment RegularUser on User {
   id
+  profile
   username
   isSubmitter
   isAdmin
+  submissions {
+    ...RegularGame
+  }
+  posts {
+    id
+    createdAt
+    updatedAt
+    body
+  }
+  favorites {
+    ...RegularGame
+  }
 }

@@ -26,7 +26,12 @@ interface GameDetailsProps {
 
 export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
   const header = (
-    <Box overflow="hidden" sx={{ transform: "translate3d(0, 0, 0)" }}>
+    <Box
+      height="300px"
+      flex={1}
+      overflow="hidden"
+      sx={{ transform: "translate3d(0, 0, 0)" }}
+    >
       <Image
         src={game.banner || "https://i.imgur.com/PffO0zx.png"}
         w="100%"

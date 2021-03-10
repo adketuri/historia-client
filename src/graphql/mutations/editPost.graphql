@@ -1,0 +1,5 @@
+mutation UpdatePost($id: Int!, $body: String!) {
+  updatePost(id: $id, body: $body) {
+    ...RegularPost
+  }
+}

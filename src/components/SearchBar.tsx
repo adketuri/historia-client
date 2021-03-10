@@ -57,8 +57,8 @@ export const SearchBar: React.FC<SearchBarProps> = () => {
               <IconButton
                 aria-label="Search"
                 type="submit"
+                variant="unstyled"
                 isLoading={submitting}
-                disabled={formik.values.search.length < 2}
                 icon={<SearchIcon color={textColor[colorMode]} />}
               />
             }

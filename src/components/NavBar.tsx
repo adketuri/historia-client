@@ -30,12 +30,21 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     // Not logged in
     body = (
       <>
-        <NextLink href="/login">
-          <Link mr={2}>Login</Link>
-        </NextLink>
-        <NextLink href="/register">
-          <Link>Register</Link>
-        </NextLink>
+        <Button
+          mr={2}
+          onClick={() => router.push("/login")}
+          size="xs"
+          variant="nav"
+        >
+          Login
+        </Button>
+        <Button
+          onClick={() => router.push("/register")}
+          size="xs"
+          variant="nav"
+        >
+          Register
+        </Button>
       </>
     );
   } else {

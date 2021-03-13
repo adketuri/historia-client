@@ -141,6 +141,7 @@ export type PaginatedGames = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changeProfile: UserResponse;
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
@@ -155,6 +156,11 @@ export type Mutation = {
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
+};
+
+
+export type MutationChangeProfileArgs = {
+  newProfile: Scalars['String'];
 };
 
 
@@ -342,6 +348,19 @@ export type ChangePasswordMutationVariables = Exact<{
 export type ChangePasswordMutation = (
   { __typename?: 'Mutation' }
   & { changePassword: (
+    { __typename?: 'UserResponse' }
+    & RegularUserResponseFragment
+  ) }
+);
+
+export type ChangeProfileMutationVariables = Exact<{
+  newProfile: Scalars['String'];
+}>;
+
+
+export type ChangeProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { changeProfile: (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
   ) }
@@ -747,6 +766,38 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const ChangeProfileDocument = gql`
+    mutation ChangeProfile($newProfile: String!) {
+  changeProfile(newProfile: $newProfile) {
+    ...RegularUserResponse
+  }
+}
+    ${RegularUserResponseFragmentDoc}`;
+export type ChangeProfileMutationFn = Apollo.MutationFunction<ChangeProfileMutation, ChangeProfileMutationVariables>;
+
+/**
+ * __useChangeProfileMutation__
+ *
+ * To run a mutation, you first call `useChangeProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeProfileMutation, { data, loading, error }] = useChangeProfileMutation({
+ *   variables: {
+ *      newProfile: // value for 'newProfile'
+ *   },
+ * });
+ */
+export function useChangeProfileMutation(baseOptions?: Apollo.MutationHookOptions<ChangeProfileMutation, ChangeProfileMutationVariables>) {
+        return Apollo.useMutation<ChangeProfileMutation, ChangeProfileMutationVariables>(ChangeProfileDocument, baseOptions);
+      }
+export type ChangeProfileMutationHookResult = ReturnType<typeof useChangeProfileMutation>;
+export type ChangeProfileMutationResult = Apollo.MutationResult<ChangeProfileMutation>;
+export type ChangeProfileMutationOptions = Apollo.BaseMutationOptions<ChangeProfileMutation, ChangeProfileMutationVariables>;
 export const CreateDownloadDocument = gql`
     mutation CreateDownload($gameId: Int!, $url: String!) {
   createDownload(gameId: $gameId, url: $url) {

@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { Layout } from "../../components/Layout";
 import { TextSection } from "../../components/TextSection";
 import { useUserQuery } from "../../generated/graphql";
 import { withApollo } from "../../utils/withApollo";
-import { Text } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Text } from "@chakra-ui/react";
 import { GameCard } from "../../components/GameCard";
 import { CommentList } from "../../components/CommentList";
+import { EditIcon } from "@chakra-ui/icons";
+import { UserProfile } from "../../components/UserProfile";
 
 const UserLoading = () => {
   return <Text>Loading...</Text>;
@@ -20,7 +22,7 @@ const UserPage = () => {
     variables: { username },
   });
 
-  console.log(loading);
+  console.log("!AK ", data);
 
   return (
     <Layout>
@@ -28,9 +30,11 @@ const UserPage = () => {
         <UserLoading />
       ) : (
         <>
-          <TextSection heading={data?.user?.username}>
-            {data?.user?.profile || "No Profile"}
-          </TextSection>
+          <Box>
+            <TextSection heading={data?.user?.username}>
+              <UserProfile user={data.user} />
+            </TextSection>
+          </Box>
           {data?.user?.favorites && (
             <TextSection heading="Favorite Games">
               {data.user.favorites.map((g) => (

@@ -1,0 +1,5 @@
+mutation ChangeProfile($newProfile: String!) {
+  changeProfile(newProfile: $newProfile) {
+    ...RegularUserResponse
+  }
+}

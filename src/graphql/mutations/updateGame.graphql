@@ -1,0 +1,10 @@
+mutation UpdateGame($id: Int!, $input: GameInput!) {
+  updateGame(id: $id, input: $input) {
+    game {
+      ...RegularGame
+    }
+    errors {
+      ...RegularError
+    }
+  }
+}

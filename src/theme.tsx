@@ -83,7 +83,8 @@ const theme = extendTheme({
     },
   },
   colors: {
-    black: "#16161D",
+    black: "#444444", // text color on light theme
+    white: "#ffcccc", // text color on dark theme
   },
   fonts,
   breakpoints,

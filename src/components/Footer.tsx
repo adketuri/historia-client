@@ -27,7 +27,7 @@ export const Footer: React.FC<FooterProps> = () => {
 
   return (
     <Box bg={bgColor[colorMode]} color={color[colorMode]}>
-      <Flex mx="auto" maxW={800} px={5} py={1} my={5} align="top">
+      <Flex mx="auto" maxW={800} py={1} my={5} align="top">
         <Box flex="4" mr={10}>
           <FooterAbout />
         </Box>

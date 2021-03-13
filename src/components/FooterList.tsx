@@ -23,8 +23,8 @@ export const FooterList: React.FC<FooterListProps> = ({
       <Text variant="footerHeading" mb={2}>
         {header}
       </Text>
-      {links.map((link) => (
-        <Text variant="footerContent">
+      {links.map((link, i) => (
+        <Text variant="footerContent" key={i + link.url}>
           <NextLink href={link.url}>
             <Link variant="footerLink" isExternal={external}>
               {link.text}

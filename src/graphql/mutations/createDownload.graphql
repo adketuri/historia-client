@@ -1,0 +1,5 @@
+mutation CreateDownload($gameId: Int!, $url: String!) {
+  createDownload(gameId: $gameId, url: $url) {
+    ...RegularDownload
+  }
+}

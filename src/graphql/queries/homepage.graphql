@@ -1,0 +1,22 @@
+query Homepage {
+  homepage {
+    promotedGames {
+      ...RegularGame
+    }
+    newGames {
+      ...RegularGame
+    }
+    newScreenshots {
+      url
+      game {
+        ...RegularGame
+      }
+    }
+    newPosts {
+      body
+      game {
+        ...RegularGame
+      }
+    }
+  }
+}

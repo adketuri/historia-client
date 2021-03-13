@@ -46,7 +46,7 @@ export const ScreenshotList: React.FC<ScreenshotListProps> = ({
           <>
             <Slider>
               {screens.map((s, i) => (
-                <Slide index={i} key={game?.slug + i}>
+                <Slide index={i} key={s.url + i}>
                   <Image
                     objectFit="cover"
                     width="100%"
@@ -66,8 +66,8 @@ export const ScreenshotList: React.FC<ScreenshotListProps> = ({
                 <ArrowRightIcon />
               </ButtonNext>
             </Box>
-            <ButtonLast ref={lastRef.current}>last</ButtonLast>
-            <Button onClick={() => console.log(lastRef)}>Last REF?</Button>
+            {/* <ButtonLast ref={lastRef.current}>last</ButtonLast> */}
+            {/* <Button onClick={() => console.log(lastRef)}>Last REF?</Button> */}
           </>
         ) : (
           <Text>There are no screenshots for this game.</Text>

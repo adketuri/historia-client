@@ -23,7 +23,6 @@ export const CommentList: React.FC<CommentListProps> = ({
 
   return (
     <>
-      {(!posts || posts.length == 0) && <Text>No Comments Yet!</Text>}
       {posts &&
         posts.map((p) => {
           const date = new Date(parseInt(p.createdAt));

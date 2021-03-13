@@ -6,6 +6,7 @@ fragment RegularGame on Game {
   year
   shortDescription
   longDescription
+  tags
   thumbnail
   banner
   favorited
@@ -20,6 +21,9 @@ fragment RegularGame on Game {
   }
   screenshots {
     ...RegularScreenshot
+  }
+  downloads {
+    ...RegularDownload
   }
   favoriteCount
 }

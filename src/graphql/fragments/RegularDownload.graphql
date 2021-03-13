@@ -1,0 +1,7 @@
+fragment RegularDownload on Download {
+  id
+  createdAt
+  updatedAt
+  url
+  verified
+}

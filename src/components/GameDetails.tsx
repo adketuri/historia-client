@@ -1,30 +1,35 @@
-import * as React from "react";
-import { Game, RegularGameFragment } from "../generated/graphql";
-import { Layout } from "./Layout";
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
-  Button,
-  Divider,
   Flex,
   Heading,
+  IconButton,
   Image,
+  Link,
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import { FavoriteButton } from "./FavoriteButton";
-import { TextSection } from "./TextSection";
+import { useRouter } from "next/router";
+import * as React from "react";
+import { RegularGameFragment, useMeQuery } from "../generated/graphql";
 import { CommentList } from "./CommentList";
-import { Upload } from "./Upload";
-import { useRef } from "react";
-import { Form } from "formik";
+import { DownloadList } from "./DownloadList";
+import { FavoriteButton } from "./FavoriteButton";
+import { Layout } from "./Layout";
 import { ScreenshotList } from "./ScreenshotList";
+import { TextSection } from "./TextSection";
+import NextLink from "next/link";
 
 interface GameDetailsProps {
   game: RegularGameFragment;
 }
 
 export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
+  const { data } = useMeQuery();
+  const router = useRouter();
+
+  const canEdit = data?.me?.isAdmin || data?.me?.id === game.submitter.id;
   const header = (
     <Box
       height="300px"
@@ -53,6 +58,16 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
           <Box flex="3">
             <Heading color="gray.100" as="h1" size="lg" mb="5px">
               {game.title}
+              {canEdit && (
+                <IconButton
+                  ml={1}
+                  size="sm"
+                  variant="ghost"
+                  aria-label="Edit Game"
+                  onClick={() => router.push(`/games/edit/${game.slug}`)}
+                  icon={<EditIcon />}
+                />
+              )}
             </Heading>
             <Heading color="gray.200" as="h2" size="md" mb="5px">
               {game.author}
@@ -60,12 +75,14 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <Heading color="gray.200" as="h2" size="md" mb="15px">
               {game.year}
             </Heading>
-            <Badge mb="15px" mr="5px">
-              Fantasy
-            </Badge>
-            <Badge mb="15px" mr="5px">
-              Adventure
-            </Badge>
+            {game?.tags?.split(",").map(
+              (tag) =>
+                tag.length > 0 && (
+                  <Badge key={tag} mb="15px" mr="5px">
+                    {tag}
+                  </Badge>
+                )
+            )}
           </Box>
         </Flex>
       </Box>
@@ -92,10 +109,18 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <TextSection heading="Screenshots">
               <ScreenshotList game={game} />
             </TextSection>
+            <TextSection heading="Downloads">
+              <DownloadList game={game} />
+            </TextSection>
             <TextSection heading="Comments">
               <CommentList posts={game.posts} gameId={game.id} />
             </TextSection>
-            <Text mt="20px">{`Submitted by ${game.submitter.username}`}</Text>
+            <Text my="20px">
+              Submitted by{" "}
+              <NextLink href={`../users/${game.submitter.username}`}>
+                <Link variant="comment">{game.submitter.username}</Link>
+              </NextLink>
+            </Text>
           </Box>
         </Flex>
       </Layout>

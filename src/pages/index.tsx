@@ -1,90 +1,31 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Link,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import NextLink from "next/link";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
-import { FavoriteButton } from "../components/FavoriteButton";
 import { Layout } from "../components/Layout";
-import { useFavoriteMutation, useGamesQuery } from "../generated/graphql";
+import { NewCommentsColumn } from "../components/NewCommentsColumn";
+import { NewGamesColumn } from "../components/NewGamesColumn";
+import { NewScreenshots } from "../components/NewScreenshots";
+import { PromotedGames } from "../components/PromotedGames";
+import { useFavoriteMutation, useHomepageQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
 
 const Index = () => {
-  const { data, error, loading, fetchMore, variables } = useGamesQuery({
-    variables: {
-      limit: 20,
-      cursor: null as null | string,
-    },
+  const { data, error, loading } = useHomepageQuery({
     notifyOnNetworkStatusChange: true,
   });
   const [favorite] = useFavoriteMutation();
   return (
     <Layout>
-      <NextLink href="/games/submit">
-        <Link mr={2}>Submit Game</Link>
-      </NextLink>
-      <br />
-      {!data || !data.games || !data.games.games ? (
-        <div>Loading</div>
+      {!data || !data.homepage ? (
+        <Box>Loading</Box>
       ) : (
-        <VStack spacing={8}>
-          {data.games.games.map((g) => (
-            <Box p={5} shadow="md" borderWidth="1px" key={g.id}>
-              <FavoriteButton game={g} preset="lg" />
-              <Heading fontSize="xl">
-                <NextLink href={`games/${g.slug}`}>
-                  <Link>{g.title || "Untitled"}</Link>
-                </NextLink>
-              </Heading>
-              <Text mt={4}>{g.shortDescription}</Text>
-              <Text mt={4}>Submitted by {g.submitter.username}</Text>
-            </Box>
-          ))}
-        </VStack>
-      )}
-      {data?.games.hasMore ? (
-        <Button
-          m="auto"
-          my={8}
-          isLoading={loading}
-          onClick={() => {
-            if (!data) return;
-            fetchMore({
-              variables: {
-                limit: variables?.limit,
-                cursor: data.games.games[data.games.games.length - 1].createdAt,
-              },
-              // updateQuery: (
-              //   previousValues,
-              //   { fetchMoreResult }: { fetchMoreResult: GamesQuery }
-              // ): GamesQuery => {
-              //   if (!fetchMoreResult) return previousValues as GamesQuery;
-              //   return {
-              //     __typename: "Query",
-              //     games: {
-              //       __typename: "PaginatedGames",
-              //       hasMore: (fetchMoreResult as GamesQuery).games.hasMore,
-              //       games: [
-              //         ...(previousValues as GamesQuery).games.games,
-              //         ...(fetchMoreResult as GamesQuery).games.games,
-              //       ],
-              //     },
-              //   };
-              // },
-            });
-          }}
-        >
-          Load More
-        </Button>
-      ) : (
-        <Flex justify="center">
-          <Text m={8}>You've reached the end. Wow!!</Text>
-        </Flex>
+        <>
+          <PromotedGames games={data.homepage.promotedGames} />
+          <NewScreenshots screenshots={data.homepage.newScreenshots} />
+          <Flex>
+            <NewGamesColumn data={data.homepage.newGames} />
+            <NewCommentsColumn data={data.homepage.newPosts} />
+          </Flex>
+        </>
       )}
     </Layout>
   );

@@ -17,6 +17,7 @@ export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
   user?: Maybe<User>;
+  homepage: HomepageResponse;
   findGames: Array<Game>;
   games: PaginatedGames;
   game?: Maybe<Game>;
@@ -64,6 +65,7 @@ export type User = {
   posts?: Maybe<Array<Post>>;
   favorites: Array<Game>;
   screenshots?: Maybe<Array<Screenshot>>;
+  downloads?: Maybe<Array<Download>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -74,6 +76,7 @@ export type Game = {
   slug: Scalars['String'];
   title: Scalars['String'];
   author?: Maybe<Scalars['String']>;
+  tags?: Maybe<Scalars['String']>;
   year?: Maybe<Scalars['Float']>;
   shortDescription?: Maybe<Scalars['String']>;
   longDescription?: Maybe<Scalars['String']>;
@@ -85,6 +88,7 @@ export type Game = {
   favoriteCount: Scalars['Int'];
   posts?: Maybe<Array<Post>>;
   screenshots?: Maybe<Array<Screenshot>>;
+  downloads?: Maybe<Array<Download>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -110,6 +114,25 @@ export type Screenshot = {
   submitter: User;
 };
 
+export type Download = {
+  __typename?: 'Download';
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  url: Scalars['String'];
+  verified: Scalars['Boolean'];
+  game: Game;
+  submitter: User;
+};
+
+export type HomepageResponse = {
+  __typename?: 'HomepageResponse';
+  promotedGames: Array<Game>;
+  newScreenshots: Array<Screenshot>;
+  newPosts: Array<Post>;
+  newGames: Array<Game>;
+};
+
 export type PaginatedGames = {
   __typename?: 'PaginatedGames';
   games: Array<Game>;
@@ -123,10 +146,11 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  createDownload: Download;
   createScreenshot: Screenshot;
   favorite: Scalars['Boolean'];
+  updateGame: GameResponse;
   createGame: GameResponse;
-  updateGame?: Maybe<Game>;
   deleteGame: Scalars['Boolean'];
   createPost: Post;
   updatePost?: Maybe<Post>;
@@ -156,6 +180,12 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationCreateDownloadArgs = {
+  url: Scalars['String'];
+  gameId: Scalars['Int'];
+};
+
+
 export type MutationCreateScreenshotArgs = {
   url: Scalars['String'];
   gameId: Scalars['Int'];
@@ -168,14 +198,14 @@ export type MutationFavoriteArgs = {
 };
 
 
-export type MutationCreateGameArgs = {
+export type MutationUpdateGameArgs = {
   input: GameInput;
+  id: Scalars['Int'];
 };
 
 
-export type MutationUpdateGameArgs = {
-  title: Scalars['String'];
-  id: Scalars['Float'];
+export type MutationCreateGameArgs = {
+  input: GameInput;
 };
 
 
@@ -230,9 +260,15 @@ export type GameInput = {
   year?: Maybe<Scalars['Float']>;
   shortDescription?: Maybe<Scalars['String']>;
   longDescription?: Maybe<Scalars['String']>;
+  tags?: Maybe<Scalars['String']>;
   thumbnail?: Maybe<Scalars['String']>;
   banner?: Maybe<Scalars['String']>;
 };
+
+export type RegularDownloadFragment = (
+  { __typename?: 'Download' }
+  & Pick<Download, 'id' | 'createdAt' | 'updatedAt' | 'url' | 'verified'>
+);
 
 export type RegularErrorFragment = (
   { __typename?: 'FieldError' }
@@ -241,7 +277,7 @@ export type RegularErrorFragment = (
 
 export type RegularGameFragment = (
   { __typename?: 'Game' }
-  & Pick<Game, 'id' | 'slug' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'thumbnail' | 'banner' | 'favorited' | 'createdAt' | 'updatedAt' | 'favoriteCount'>
+  & Pick<Game, 'id' | 'slug' | 'title' | 'author' | 'year' | 'shortDescription' | 'longDescription' | 'tags' | 'thumbnail' | 'banner' | 'favorited' | 'createdAt' | 'updatedAt' | 'favoriteCount'>
   & { submitter: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -251,6 +287,9 @@ export type RegularGameFragment = (
   )>>, screenshots?: Maybe<Array<(
     { __typename?: 'Screenshot' }
     & RegularScreenshotFragment
+  )>>, downloads?: Maybe<Array<(
+    { __typename?: 'Download' }
+    & RegularDownloadFragment
   )>> }
 );
 
@@ -305,6 +344,20 @@ export type ChangePasswordMutation = (
   & { changePassword: (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
+  ) }
+);
+
+export type CreateDownloadMutationVariables = Exact<{
+  gameId: Scalars['Int'];
+  url: Scalars['String'];
+}>;
+
+
+export type CreateDownloadMutation = (
+  { __typename?: 'Mutation' }
+  & { createDownload: (
+    { __typename?: 'Download' }
+    & RegularDownloadFragment
   ) }
 );
 
@@ -425,6 +478,26 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateGameMutationVariables = Exact<{
+  id: Scalars['Int'];
+  input: GameInput;
+}>;
+
+
+export type UpdateGameMutation = (
+  { __typename?: 'Mutation' }
+  & { updateGame: (
+    { __typename?: 'GameResponse' }
+    & { game?: Maybe<(
+      { __typename?: 'Game' }
+      & RegularGameFragment
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & RegularErrorFragment
+    )>> }
+  ) }
+);
+
 export type FindGamesQueryVariables = Exact<{
   search: Scalars['String'];
 }>;
@@ -466,6 +539,37 @@ export type GamesQuery = (
     & { games: Array<(
       { __typename?: 'Game' }
       & RegularGameFragment
+    )> }
+  ) }
+);
+
+export type HomepageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HomepageQuery = (
+  { __typename?: 'Query' }
+  & { homepage: (
+    { __typename?: 'HomepageResponse' }
+    & { promotedGames: Array<(
+      { __typename?: 'Game' }
+      & RegularGameFragment
+    )>, newGames: Array<(
+      { __typename?: 'Game' }
+      & RegularGameFragment
+    )>, newScreenshots: Array<(
+      { __typename?: 'Screenshot' }
+      & Pick<Screenshot, 'url'>
+      & { game: (
+        { __typename?: 'Game' }
+        & RegularGameFragment
+      ) }
+    )>, newPosts: Array<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'body'>
+      & { game: (
+        { __typename?: 'Game' }
+        & RegularGameFragment
+      ) }
     )> }
   ) }
 );
@@ -530,6 +634,15 @@ export const RegularScreenshotFragmentDoc = gql`
   verified
 }
     `;
+export const RegularDownloadFragmentDoc = gql`
+    fragment RegularDownload on Download {
+  id
+  createdAt
+  updatedAt
+  url
+  verified
+}
+    `;
 export const RegularGameFragmentDoc = gql`
     fragment RegularGame on Game {
   id
@@ -539,6 +652,7 @@ export const RegularGameFragmentDoc = gql`
   year
   shortDescription
   longDescription
+  tags
   thumbnail
   banner
   favorited
@@ -554,10 +668,14 @@ export const RegularGameFragmentDoc = gql`
   screenshots {
     ...RegularScreenshot
   }
+  downloads {
+    ...RegularDownload
+  }
   favoriteCount
 }
     ${RegularPostFragmentDoc}
-${RegularScreenshotFragmentDoc}`;
+${RegularScreenshotFragmentDoc}
+${RegularDownloadFragmentDoc}`;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
@@ -629,6 +747,39 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const CreateDownloadDocument = gql`
+    mutation CreateDownload($gameId: Int!, $url: String!) {
+  createDownload(gameId: $gameId, url: $url) {
+    ...RegularDownload
+  }
+}
+    ${RegularDownloadFragmentDoc}`;
+export type CreateDownloadMutationFn = Apollo.MutationFunction<CreateDownloadMutation, CreateDownloadMutationVariables>;
+
+/**
+ * __useCreateDownloadMutation__
+ *
+ * To run a mutation, you first call `useCreateDownloadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDownloadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDownloadMutation, { data, loading, error }] = useCreateDownloadMutation({
+ *   variables: {
+ *      gameId: // value for 'gameId'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useCreateDownloadMutation(baseOptions?: Apollo.MutationHookOptions<CreateDownloadMutation, CreateDownloadMutationVariables>) {
+        return Apollo.useMutation<CreateDownloadMutation, CreateDownloadMutationVariables>(CreateDownloadDocument, baseOptions);
+      }
+export type CreateDownloadMutationHookResult = ReturnType<typeof useCreateDownloadMutation>;
+export type CreateDownloadMutationResult = Apollo.MutationResult<CreateDownloadMutation>;
+export type CreateDownloadMutationOptions = Apollo.BaseMutationOptions<CreateDownloadMutation, CreateDownloadMutationVariables>;
 export const CreateGameDocument = gql`
     mutation CreateGame($input: GameInput!) {
   createGame(input: $input) {
@@ -921,6 +1072,45 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateGameDocument = gql`
+    mutation UpdateGame($id: Int!, $input: GameInput!) {
+  updateGame(id: $id, input: $input) {
+    game {
+      ...RegularGame
+    }
+    errors {
+      ...RegularError
+    }
+  }
+}
+    ${RegularGameFragmentDoc}
+${RegularErrorFragmentDoc}`;
+export type UpdateGameMutationFn = Apollo.MutationFunction<UpdateGameMutation, UpdateGameMutationVariables>;
+
+/**
+ * __useUpdateGameMutation__
+ *
+ * To run a mutation, you first call `useUpdateGameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGameMutation, { data, loading, error }] = useUpdateGameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGameMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGameMutation, UpdateGameMutationVariables>) {
+        return Apollo.useMutation<UpdateGameMutation, UpdateGameMutationVariables>(UpdateGameDocument, baseOptions);
+      }
+export type UpdateGameMutationHookResult = ReturnType<typeof useUpdateGameMutation>;
+export type UpdateGameMutationResult = Apollo.MutationResult<UpdateGameMutation>;
+export type UpdateGameMutationOptions = Apollo.BaseMutationOptions<UpdateGameMutation, UpdateGameMutationVariables>;
 export const FindGamesDocument = gql`
     query FindGames($search: String!) {
   findGames(search: $search) {
@@ -1025,6 +1215,55 @@ export function useGamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Game
 export type GamesQueryHookResult = ReturnType<typeof useGamesQuery>;
 export type GamesLazyQueryHookResult = ReturnType<typeof useGamesLazyQuery>;
 export type GamesQueryResult = Apollo.QueryResult<GamesQuery, GamesQueryVariables>;
+export const HomepageDocument = gql`
+    query Homepage {
+  homepage {
+    promotedGames {
+      ...RegularGame
+    }
+    newGames {
+      ...RegularGame
+    }
+    newScreenshots {
+      url
+      game {
+        ...RegularGame
+      }
+    }
+    newPosts {
+      body
+      game {
+        ...RegularGame
+      }
+    }
+  }
+}
+    ${RegularGameFragmentDoc}`;
+
+/**
+ * __useHomepageQuery__
+ *
+ * To run a query within a React component, call `useHomepageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomepageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomepageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHomepageQuery(baseOptions?: Apollo.QueryHookOptions<HomepageQuery, HomepageQueryVariables>) {
+        return Apollo.useQuery<HomepageQuery, HomepageQueryVariables>(HomepageDocument, baseOptions);
+      }
+export function useHomepageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomepageQuery, HomepageQueryVariables>) {
+          return Apollo.useLazyQuery<HomepageQuery, HomepageQueryVariables>(HomepageDocument, baseOptions);
+        }
+export type HomepageQueryHookResult = ReturnType<typeof useHomepageQuery>;
+export type HomepageLazyQueryHookResult = ReturnType<typeof useHomepageLazyQuery>;
+export type HomepageQueryResult = Apollo.QueryResult<HomepageQuery, HomepageQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

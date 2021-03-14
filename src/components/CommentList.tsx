@@ -66,7 +66,9 @@ export const CommentList: React.FC<CommentListProps> = ({
             </Box>
           );
         })}
-      {data?.me && gameId && <CommentEntry gameId={gameId} />}
+      {!data?.me?.isBanned && data?.me?.isVerified && gameId && (
+        <CommentEntry gameId={gameId} />
+      )}
     </>
   );
 };

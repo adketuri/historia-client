@@ -11,8 +11,6 @@ interface DownloadListProps {
 export const DownloadList: React.FC<DownloadListProps> = ({ game }) => {
   const { data } = useMeQuery();
 
-  if (!data?.me) return <Text>Please log in to access game downloads.</Text>;
-
   return (
     <Box pos="relative">
       <Box pos="absolute" top={"-50px"} right={0}>

@@ -3,6 +3,8 @@ query Me {
     id
     username
     isSubmitter
+    isBanned
     isAdmin
+    isVerified
   }
 }

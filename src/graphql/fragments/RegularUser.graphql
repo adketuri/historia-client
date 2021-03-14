@@ -5,6 +5,7 @@ fragment RegularUser on User {
   isBanned
   isSubmitter
   isAdmin
+  isVerified
   submissions {
     ...RegularGame
   }

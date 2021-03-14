@@ -61,6 +61,7 @@ export type User = {
   email?: Maybe<Scalars['String']>;
   isSubmitter: Scalars['Boolean'];
   isBanned: Scalars['Boolean'];
+  isVerified: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
   submissions: Array<Game>;
   posts?: Maybe<Array<Post>>;
@@ -144,6 +145,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   updateUser: Scalars['Boolean'];
   changeProfile: UserResponse;
+  verifyEmail: Scalars['Boolean'];
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
@@ -170,6 +172,11 @@ export type MutationUpdateUserArgs = {
 
 export type MutationChangeProfileArgs = {
   newProfile: Scalars['String'];
+};
+
+
+export type MutationVerifyEmailArgs = {
+  token: Scalars['String'];
 };
 
 
@@ -324,7 +331,7 @@ export type RegularScreenshotFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'profile' | 'username' | 'isBanned' | 'isSubmitter' | 'isAdmin'>
+  & Pick<User, 'id' | 'profile' | 'username' | 'isBanned' | 'isSubmitter' | 'isAdmin' | 'isVerified'>
   & { submissions: Array<(
     { __typename?: 'Game' }
     & RegularGameFragment
@@ -538,6 +545,16 @@ export type UpdateUserMutation = (
   & Pick<Mutation, 'updateUser'>
 );
 
+export type VerifyEmailMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type VerifyEmailMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'verifyEmail'>
+);
+
 export type FindGamesQueryVariables = Exact<{
   search: Scalars['String'];
 }>;
@@ -621,7 +638,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'isSubmitter' | 'isAdmin'>
+    & Pick<User, 'id' | 'username' | 'isSubmitter' | 'isBanned' | 'isAdmin' | 'isVerified'>
   )> }
 );
 
@@ -724,6 +741,7 @@ export const RegularUserFragmentDoc = gql`
   isBanned
   isSubmitter
   isAdmin
+  isVerified
   submissions {
     ...RegularGame
   }
@@ -1216,6 +1234,36 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const VerifyEmailDocument = gql`
+    mutation VerifyEmail($token: String!) {
+  verifyEmail(token: $token)
+}
+    `;
+export type VerifyEmailMutationFn = Apollo.MutationFunction<VerifyEmailMutation, VerifyEmailMutationVariables>;
+
+/**
+ * __useVerifyEmailMutation__
+ *
+ * To run a mutation, you first call `useVerifyEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyEmailMutation, { data, loading, error }] = useVerifyEmailMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useVerifyEmailMutation(baseOptions?: Apollo.MutationHookOptions<VerifyEmailMutation, VerifyEmailMutationVariables>) {
+        return Apollo.useMutation<VerifyEmailMutation, VerifyEmailMutationVariables>(VerifyEmailDocument, baseOptions);
+      }
+export type VerifyEmailMutationHookResult = ReturnType<typeof useVerifyEmailMutation>;
+export type VerifyEmailMutationResult = Apollo.MutationResult<VerifyEmailMutation>;
+export type VerifyEmailMutationOptions = Apollo.BaseMutationOptions<VerifyEmailMutation, VerifyEmailMutationVariables>;
 export const FindGamesDocument = gql`
     query FindGames($search: String!) {
   findGames(search: $search) {
@@ -1375,7 +1423,9 @@ export const MeDocument = gql`
     id
     username
     isSubmitter
+    isBanned
     isAdmin
+    isVerified
   }
 }
     `;

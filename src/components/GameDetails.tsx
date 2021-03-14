@@ -109,13 +109,15 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <TextSection heading="Screenshots">
               <ScreenshotList game={game} />
             </TextSection>
-            <TextSection heading="Downloads">
-              <DownloadList game={game} />
-            </TextSection>
+            {data?.me?.isVerified && !data.me.isBanned && (
+              <TextSection heading="Downloads">
+                <DownloadList game={game} />
+              </TextSection>
+            )}
             <TextSection heading="Comments">
               <CommentList posts={game.posts} gameId={game.id} />
             </TextSection>
-            <Text my="20px">
+            <Text my="20px" fontSize="sm">
               Submitted by{" "}
               <NextLink href={`../users/${game.submitter.username}`}>
                 <Link variant="comment">{game.submitter.username}</Link>

@@ -50,7 +50,7 @@ const S3Uploader: React.FC<S3UploaderProps> = ({
   const handleFinishedUpload = (info: { filename: any; fileUrl: any }) => {
     console.log("File uploaded with filename", info.filename);
     console.log("Access it on s3 at", info.fileUrl);
-    if (type === "screenshots") {
+    if (type === "screenshot") {
       createScreenshot({
         variables: {
           url: info.fileUrl,
@@ -110,7 +110,7 @@ const S3Uploader: React.FC<S3UploaderProps> = ({
         : "image/png",
     signingUrlQueryParams: { uploadType: type },
   };
-  const textColor = useColorModeValue("gray.900", "gray.50");
+  const textColor = useColorModeValue("blue.900", "blue.50");
 
   return (
     <>
@@ -125,7 +125,7 @@ const S3Uploader: React.FC<S3UploaderProps> = ({
   );
 };
 
-export type UploadType = "screenshots" | "download" | "thumbnail" | "banner";
+export type UploadType = "screenshot" | "download" | "thumbnail" | "banner";
 
 interface UploadProps {
   game?: RegularGameFragment;
@@ -147,7 +147,7 @@ export const Upload: React.FC<UploadProps> = ({
   let path = undefined;
   if (game) {
     path = `${type}/${game.slug}/`;
-    if (type === "screenshots") {
+    if (type === "screenshot") {
       path = path + `${uuidv4()}`;
     }
   }

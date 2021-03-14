@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Heading, Link, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
@@ -7,6 +7,7 @@ import { Layout } from "../components/Layout";
 import { useRegisterMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { withApollo } from "../utils/withApollo";
+import NextLink from "next/link";
 
 interface RegisterProps {}
 
@@ -16,6 +17,15 @@ export const Register: React.FC<RegisterProps> = () => {
 
   return (
     <Layout variant="small">
+      <Box align="center">
+        <Heading>Register for an account</Heading>
+        <Text mt={5} mb={10}>
+          Already have an account? Please{" "}
+          <NextLink href={"/login"}>
+            <Link variant="pink">sign in.</Link>
+          </NextLink>
+        </Text>
+      </Box>
       <Formik
         initialValues={{ username: "", password: "", email: "" }}
         onSubmit={async (values, { setErrors }) => {
@@ -41,7 +51,13 @@ export const Register: React.FC<RegisterProps> = () => {
               label="Password"
               type="password"
             />
-            <Button type="submit" isLoading={isSubmitting} colorScheme="teal">
+            <Button
+              mt={5}
+              w="100%"
+              type="submit"
+              isLoading={isSubmitting}
+              colorScheme="blue"
+            >
               Register
             </Button>
           </Form>

@@ -22,11 +22,10 @@ const externalLinks = [
 
 export const Footer: React.FC<FooterProps> = () => {
   const { colorMode } = useColorMode();
-  const bgColor = { light: "pink.900", dark: "pink.900" };
-  const color = { light: "gray.00", dark: "gray.50" };
+  const bgColor = { light: "yellow.300", dark: "yellow.800" };
 
   return (
-    <Box bg={bgColor[colorMode]} color={color[colorMode]}>
+    <Box bg={bgColor[colorMode]}>
       <Flex mx="auto" maxW={800} py={1} my={5} align="top">
         <Box flex="4" mr={10}>
           <FooterAbout />

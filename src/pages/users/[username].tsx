@@ -4,7 +4,7 @@ import { Layout } from "../../components/Layout";
 import { TextSection } from "../../components/TextSection";
 import { useMeQuery, useUserQuery } from "../../generated/graphql";
 import { withApollo } from "../../utils/withApollo";
-import { Badge, Box, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, IconButton, Text, VStack } from "@chakra-ui/react";
 import { GameCard } from "../../components/GameCard";
 import { CommentList } from "../../components/CommentList";
 import { EditIcon } from "@chakra-ui/icons";
@@ -49,16 +49,20 @@ const UserPage = () => {
           </Box>
           {data?.user?.favorites && (
             <TextSection heading="Favorite Games">
-              {data.user.favorites.map((g) => (
-                <GameCard key={"fave" + g.id} game={g} />
-              ))}
+              <VStack spacing={5}>
+                {data.user.favorites.map((g) => (
+                  <GameCard key={"fave" + g.id} game={g} />
+                ))}
+              </VStack>
             </TextSection>
           )}
           {data?.user?.submissions && (
             <TextSection heading="Submissions">
-              {data.user.submissions.map((g) => (
-                <GameCard key={"sub" + g.id} game={g} />
-              ))}
+              <VStack spacing={5}>
+                {data.user.submissions.map((g) => (
+                  <GameCard key={"sub" + g.id} game={g} />
+                ))}
+              </VStack>
             </TextSection>
           )}
           {data?.user?.posts && (

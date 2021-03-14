@@ -23,8 +23,8 @@ export const PromotedGames: React.FC<PromotedGamesProps> = ({ games }) => {
       <TextSection heading="Weekly Showcase">
         <Box pos="relative">
           <CarouselProvider
-            naturalSlideWidth={250}
-            naturalSlideHeight={300}
+            naturalSlideWidth={300}
+            naturalSlideHeight={400}
             visibleSlides={3}
             totalSlides={games.length}
             infinite={true}
@@ -32,7 +32,9 @@ export const PromotedGames: React.FC<PromotedGamesProps> = ({ games }) => {
             <Slider>
               {games.map((g, i) => (
                 <Slide index={i} key={g.slug + i}>
-                  <GameIcon index={i} game={g} />
+                  <Box mr={5}>
+                    <GameIcon index={i} game={g} />
+                  </Box>
                 </Slide>
               ))}
             </Slider>

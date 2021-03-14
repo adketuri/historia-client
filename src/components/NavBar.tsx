@@ -19,8 +19,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
   // Dark vs Light mode color values
   const { colorMode } = useColorMode();
-  const bgColor = { light: "pink.700", dark: "pink.400" };
-  const textColor = { dark: "gray.900", light: "gray.100" };
+  const bgColor = { light: "pink.300", dark: "pink.700" };
 
   // Construct our top nav
   let body = null;
@@ -68,25 +67,25 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
   return (
     <Box bg={bgColor[colorMode]}>
-      <Flex mx="auto" maxW={800} px={5} py={1} align="center">
-        <Button variant="nav" size="xs" onClick={() => router.push("/")}>
-          rm2k.net
-        </Button>
+      <Flex mx="auto" maxW={800} py={1} align="center">
+        <NextLink href={"/"}>
+          <Link variant="nav">rm2k.net</Link>
+        </NextLink>
 
         <SearchBar />
 
         <NextLink href="/browse">
-          <Button
-            variant="nav"
-            size="xs"
-            onClick={() => router.push("/browse")}
-          >
+          <Link variant="nav" onClick={() => router.push("/browse")}>
             Games
-          </Button>
+          </Link>
         </NextLink>
-        <Button variant="nav" size="xs" onClick={() => router.push("/about")}>
-          About
-        </Button>
+
+        <NextLink href="/about">
+          <Link ml={5} variant="nav" onClick={() => router.push("/about")}>
+            About
+          </Link>
+        </NextLink>
+
         <Box ml={"auto"}>{body}</Box>
         <ColorModeSwitcher justifySelf="flex-end" />
       </Flex>

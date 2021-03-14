@@ -18,7 +18,7 @@ interface GameCardProps {
 
 export const GameCard: React.FC<GameCardProps> = ({ game }) => {
   const { colorMode } = useColorMode();
-  const bgColor = { light: "gray.100", dark: "gray.800" };
+  const bgColor = { light: "blue.100", dark: "blue.800" };
 
   return (
     <Box shadow="sm" key={game.id} width="100%">

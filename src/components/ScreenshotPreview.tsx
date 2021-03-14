@@ -23,7 +23,7 @@ export const ScreenshotPreview: React.FC<ScreenshotPreviewProps> = ({
             pos="absolute"
             w="100%"
             h="100%"
-            bgGradient="linear(to-bl, transparent, pink.900)"
+            bgGradient="linear(to-bl, transparent, green.900)"
             opacity={opacity}
             onMouseEnter={() => setOpacity(HOVER_OPACITY)}
             onMouseLeave={() => setOpacity(INITIAL_OPACITY)}

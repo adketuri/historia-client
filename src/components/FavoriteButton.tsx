@@ -2,6 +2,7 @@ import {
   Game,
   RegularGameFragment,
   useFavoriteMutation,
+  useMeQuery,
 } from "../generated/graphql";
 import { Text, IconButton, Button, BoxProps } from "@chakra-ui/react";
 import React, { ButtonHTMLAttributes, useState } from "react";
@@ -20,8 +21,10 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   ...props
 }) => {
   const [favorite, { loading }] = useFavoriteMutation();
-
   const label = game.favorited ? "Favorited" : "Favorite";
+
+  const { data } = useMeQuery();
+
   const onClick = async () => {
     await favorite({
       variables: { gameId: game.id, add: !game.favorited },
@@ -57,6 +60,10 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       },
     });
   };
+
+  if (!data?.me) {
+    return <></>;
+  }
 
   if (preset == "sm") {
     return (

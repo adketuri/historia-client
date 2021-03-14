@@ -1,4 +1,12 @@
-import { Button, Flex, Link, Spacer } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Text,
+  Heading,
+  Link,
+  Spacer,
+  Box,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
@@ -15,6 +23,15 @@ export const Login: React.FC<{}> = () => {
 
   return (
     <Layout variant="small">
+      <Box align="center">
+        <Heading>Sign in to your account</Heading>
+        <Text mt={5} mb={10}>
+          New here? Please{" "}
+          <NextLink href={"/register"}>
+            <Link variant="pink">register first.</Link>
+          </NextLink>
+        </Text>
+      </Box>
       <Formik
         initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
@@ -55,16 +72,17 @@ export const Login: React.FC<{}> = () => {
               placeholder="password"
               label="Password"
               type="password"
+              forgotPassword
             />
-            <Flex>
-              <Button type="submit" isLoading={isSubmitting} colorScheme="teal">
-                Login
-              </Button>
-              <Spacer />
-              <NextLink href="/forgot-password">
-                <Link>Forgot Password?</Link>
-              </NextLink>
-            </Flex>
+            <Button
+              mt={5}
+              w="100%"
+              type="submit"
+              isLoading={isSubmitting}
+              colorScheme="blue"
+            >
+              Sign In
+            </Button>
           </Form>
         )}
       </Formik>

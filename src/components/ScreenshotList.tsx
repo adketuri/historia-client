@@ -75,7 +75,7 @@ export const ScreenshotList: React.FC<ScreenshotListProps> = ({
 
         <Box pos="absolute" top={"-50px"} right={0}>
           {game && data?.me?.isSubmitter && (
-            <Upload game={game} type="screenshots" />
+            <Upload game={game} type="screenshot" />
           )}
         </Box>
       </CarouselProvider>

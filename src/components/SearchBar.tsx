@@ -1,25 +1,20 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  InputGroup,
-  Input,
-  InputRightElement,
   IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
   useColorMode,
 } from "@chakra-ui/react";
-import { Form, Formik, useField, useFormik } from "formik";
+import { Form, Formik, useFormik } from "formik";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { useState } from "react";
-import { InputField } from "./InputField";
 
 interface SearchBarProps {}
 
 export const SearchBar: React.FC<SearchBarProps> = () => {
   const { colorMode } = useColorMode();
-  const bgColor = { light: "pink.700", dark: "pink.400" };
-  const textColor = { dark: "gray.900", light: "gray.100" };
-
-  const [submitting, setSubmitting] = useState(false);
+  const textColor = { light: "gray.900", dark: "gray.100" };
 
   const router = useRouter();
 
@@ -48,7 +43,7 @@ export const SearchBar: React.FC<SearchBarProps> = () => {
             sx={{
               "::placeholder": {
                 color: textColor[colorMode],
-                opacity: 0.5,
+                opacity: 0.8,
               },
             }}
           />
@@ -58,7 +53,6 @@ export const SearchBar: React.FC<SearchBarProps> = () => {
                 aria-label="Search"
                 type="submit"
                 variant="unstyled"
-                isLoading={submitting}
                 icon={<SearchIcon color={textColor[colorMode]} />}
               />
             }

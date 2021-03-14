@@ -1,12 +1,13 @@
-import { Button, Flex, Link, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Link, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { GameCard } from "../components/GameCard";
 import { Layout } from "../components/Layout";
-import { useGamesQuery } from "../generated/graphql";
+import { useGamesQuery, useMeQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
 import NextLink from "next/link";
 
 const Browse = () => {
+  const meQuery = useMeQuery();
   const { data, error, loading, fetchMore, variables } = useGamesQuery({
     variables: {
       limit: 20,
@@ -16,22 +17,30 @@ const Browse = () => {
   });
   return (
     <Layout>
-      <NextLink href="/games/submit">
-        <Link mr={2}>Submit Game</Link>
-      </NextLink>
+      {(meQuery.data?.me?.isSubmitter || meQuery.data?.me?.isAdmin) && (
+        <Flex>
+          <NextLink href="/games/submit">
+            <Button variant="solid" colorScheme="blue" mb={5} ml="auto">
+              Submit Game
+            </Button>
+          </NextLink>
+        </Flex>
+      )}
 
       {!data || !data.games || !data.games.games ? (
         <div>Loading</div>
       ) : (
         <VStack spacing={5}>
           {data.games.games.map((g) => (
-            <GameCard game={g} />
+            <GameCard key={g.id} game={g} />
           ))}
         </VStack>
       )}
       {data?.games.hasMore ? (
         <Button
-          m="auto"
+          variant="solid"
+          colorScheme="purple"
+          mx="auto"
           my={8}
           isLoading={loading}
           onClick={() => {

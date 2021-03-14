@@ -17,15 +17,14 @@ interface GameIconProps {
 }
 
 export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
-  const bgColor = useColorModeValue("gray.100", "gray.800");
+  const bgColor = useColorModeValue("blue.100", "blue.800");
 
   return (
-    <Box shadow="md" mx={2} bg={bgColor}>
+    <Box shadow="md" bg={bgColor}>
       <Box>
         <Image
           objectFit="cover"
-          width="100%"
-          height="100%"
+          height="300px"
           src={game.thumbnail! || "https://i.imgur.com/PffO0zx.png"}
         />
         <FavoriteButton

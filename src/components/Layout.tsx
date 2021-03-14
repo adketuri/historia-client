@@ -15,7 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({
   variant,
 }) => {
   const { colorMode } = useColorMode();
-  const bgColor = { light: "gray.50", dark: "gray.900" };
+  const bgColor = { light: "white", dark: "black" };
   const color = { light: "black", dark: "white" };
 
   return (

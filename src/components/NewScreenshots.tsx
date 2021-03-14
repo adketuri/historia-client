@@ -29,7 +29,7 @@ export const NewScreenshots: React.FC<NewScreenshotsProps> = ({
         </Box>
         <Box flex="1">
           {screenshots.slice(1, 3).map((s) => (
-            <Box w={"100%"} h={h / 2}>
+            <Box key={s.url} w={"100%"} h={h / 2}>
               <ScreenshotPreview screenshot={s} />
             </Box>
           ))}
@@ -37,7 +37,7 @@ export const NewScreenshots: React.FC<NewScreenshotsProps> = ({
       </Flex>
       <Flex>
         {screenshots.slice(3).map((s) => (
-          <Box w="100%" h={h / 2}>
+          <Box key={s.url} w="100%" h={h / 2}>
             <ScreenshotPreview screenshot={s} />
           </Box>
         ))}

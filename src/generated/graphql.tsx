@@ -60,6 +60,7 @@ export type User = {
   profile?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   isSubmitter: Scalars['Boolean'];
+  isBanned: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
   submissions: Array<Game>;
   posts?: Maybe<Array<Post>>;
@@ -141,6 +142,7 @@ export type PaginatedGames = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  updateUser: Scalars['Boolean'];
   changeProfile: UserResponse;
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
@@ -156,6 +158,13 @@ export type Mutation = {
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  isSubmitter?: Maybe<Scalars['Boolean']>;
+  isBanned?: Maybe<Scalars['Boolean']>;
+  id: Scalars['Int'];
 };
 
 
@@ -315,7 +324,7 @@ export type RegularScreenshotFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'profile' | 'username' | 'isSubmitter' | 'isAdmin'>
+  & Pick<User, 'id' | 'profile' | 'username' | 'isBanned' | 'isSubmitter' | 'isAdmin'>
   & { submissions: Array<(
     { __typename?: 'Game' }
     & RegularGameFragment
@@ -517,6 +526,18 @@ export type UpdateGameMutation = (
   ) }
 );
 
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['Int'];
+  isBanned?: Maybe<Scalars['Boolean']>;
+  isSubmitter?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateUser'>
+);
+
 export type FindGamesQueryVariables = Exact<{
   search: Scalars['String'];
 }>;
@@ -700,6 +721,7 @@ export const RegularUserFragmentDoc = gql`
   id
   profile
   username
+  isBanned
   isSubmitter
   isAdmin
   submissions {
@@ -1162,6 +1184,38 @@ export function useUpdateGameMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateGameMutationHookResult = ReturnType<typeof useUpdateGameMutation>;
 export type UpdateGameMutationResult = Apollo.MutationResult<UpdateGameMutation>;
 export type UpdateGameMutationOptions = Apollo.BaseMutationOptions<UpdateGameMutation, UpdateGameMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($id: Int!, $isBanned: Boolean, $isSubmitter: Boolean) {
+  updateUser(id: $id, isBanned: $isBanned, isSubmitter: $isSubmitter)
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      isBanned: // value for 'isBanned'
+ *      isSubmitter: // value for 'isSubmitter'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, baseOptions);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const FindGamesDocument = gql`
     query FindGames($search: String!) {
   findGames(search: $search) {

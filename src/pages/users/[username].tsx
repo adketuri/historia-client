@@ -2,13 +2,14 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Layout } from "../../components/Layout";
 import { TextSection } from "../../components/TextSection";
-import { useUserQuery } from "../../generated/graphql";
+import { useMeQuery, useUserQuery } from "../../generated/graphql";
 import { withApollo } from "../../utils/withApollo";
-import { Box, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, IconButton, Text } from "@chakra-ui/react";
 import { GameCard } from "../../components/GameCard";
 import { CommentList } from "../../components/CommentList";
 import { EditIcon } from "@chakra-ui/icons";
-import { UserProfile } from "../../components/UserProfile";
+import { UserProfile } from "../../components/profile/UserProfile";
+import { AdminControls } from "../../components/profile/AdminControls";
 
 const UserLoading = () => {
   return <Text>Loading...</Text>;
@@ -21,8 +22,7 @@ const UserPage = () => {
   const { data, loading, error } = useUserQuery({
     variables: { username },
   });
-
-  console.log("!AK ", data);
+  const meQuery = useMeQuery();
 
   return (
     <Layout>
@@ -31,6 +31,18 @@ const UserPage = () => {
       ) : (
         <>
           <Box>
+            <Flex>
+              {data.user.isAdmin && (
+                <Badge mb={2} mr={2}>
+                  admin
+                </Badge>
+              )}
+              {data.user.isSubmitter && (
+                <Badge mb={2} mr={2}>
+                  contributor
+                </Badge>
+              )}
+            </Flex>
             <TextSection heading={data?.user?.username}>
               <UserProfile user={data.user} />
             </TextSection>
@@ -38,14 +50,14 @@ const UserPage = () => {
           {data?.user?.favorites && (
             <TextSection heading="Favorite Games">
               {data.user.favorites.map((g) => (
-                <GameCard game={g} />
+                <GameCard key={"fave" + g.id} game={g} />
               ))}
             </TextSection>
           )}
           {data?.user?.submissions && (
             <TextSection heading="Submissions">
               {data.user.submissions.map((g) => (
-                <GameCard game={g} />
+                <GameCard key={"sub" + g.id} game={g} />
               ))}
             </TextSection>
           )}

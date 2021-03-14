@@ -13,7 +13,8 @@ import {
   RegularUserFragment,
   useChangeProfileMutation,
   useMeQuery,
-} from "../generated/graphql";
+} from "../../generated/graphql";
+import { AdminControls } from "./AdminControls";
 
 interface EditableControlsProps {
   isEditing: boolean;
@@ -53,20 +54,27 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
   const editable = data?.me?.id === user.id;
 
   return (
-    <Editable
-      defaultValue={user.profile || "No Profile"}
-      isPreviewFocusable={false}
-      submitOnBlur={false}
-      contentEditable={editable}
-      onSubmit={(input) => changeProfile({ variables: { newProfile: input } })}
-    >
-      {(props) => (
-        <Flex>
-          <EditablePreview />
-          <EditableInput />
-          {editable && <EditableControls {...props} />}
-        </Flex>
-      )}
-    </Editable>
+    <Flex>
+      <Box flex="1">
+        <Editable
+          defaultValue={user.profile || "No Profile"}
+          isPreviewFocusable={false}
+          submitOnBlur={false}
+          contentEditable={editable}
+          onSubmit={(input) =>
+            changeProfile({ variables: { newProfile: input } })
+          }
+        >
+          {(props) => (
+            <Flex>
+              <EditablePreview />
+              <EditableInput />
+              {editable && <EditableControls {...props} />}
+            </Flex>
+          )}
+        </Editable>
+      </Box>
+      {data?.me?.isAdmin && <AdminControls username={user.username} />}
+    </Flex>
   );
 };

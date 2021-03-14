@@ -2,6 +2,7 @@ fragment RegularUser on User {
   id
   profile
   username
+  isBanned
   isSubmitter
   isAdmin
   submissions {

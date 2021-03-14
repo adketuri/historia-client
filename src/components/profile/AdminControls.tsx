@@ -56,6 +56,15 @@ export const AdminControls: React.FC<AdminControlsProps> = ({ username }) => {
           })
         }
       />
+      <Toggle
+        text="Verified"
+        enabled={!!data?.user?.isVerified}
+        onToggle={(enabled) =>
+          updateUser({
+            variables: { id: data.user!.id, isVerified: enabled },
+          })
+        }
+      />
     </Box>
   );
 };

@@ -164,6 +164,7 @@ export type Mutation = {
 
 
 export type MutationUpdateUserArgs = {
+  isVerified?: Maybe<Scalars['Boolean']>;
   isSubmitter?: Maybe<Scalars['Boolean']>;
   isBanned?: Maybe<Scalars['Boolean']>;
   id: Scalars['Int'];
@@ -537,6 +538,7 @@ export type UpdateUserMutationVariables = Exact<{
   id: Scalars['Int'];
   isBanned?: Maybe<Scalars['Boolean']>;
   isSubmitter?: Maybe<Scalars['Boolean']>;
+  isVerified?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -1203,8 +1205,13 @@ export type UpdateGameMutationHookResult = ReturnType<typeof useUpdateGameMutati
 export type UpdateGameMutationResult = Apollo.MutationResult<UpdateGameMutation>;
 export type UpdateGameMutationOptions = Apollo.BaseMutationOptions<UpdateGameMutation, UpdateGameMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($id: Int!, $isBanned: Boolean, $isSubmitter: Boolean) {
-  updateUser(id: $id, isBanned: $isBanned, isSubmitter: $isSubmitter)
+    mutation UpdateUser($id: Int!, $isBanned: Boolean, $isSubmitter: Boolean, $isVerified: Boolean) {
+  updateUser(
+    id: $id
+    isBanned: $isBanned
+    isSubmitter: $isSubmitter
+    isVerified: $isVerified
+  )
 }
     `;
 export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
@@ -1225,6 +1232,7 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  *      id: // value for 'id'
  *      isBanned: // value for 'isBanned'
  *      isSubmitter: // value for 'isSubmitter'
+ *      isVerified: // value for 'isVerified'
  *   },
  * });
  */

@@ -31,7 +31,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
           />
         </Box>
         <Box ml={5} mr="auto">
-          <NextLink href={`games/${game.slug}`}>
+          <NextLink href={`/games/${game.slug}`}>
             <Link variant="title">{game.title || "Untitled"}</Link>
           </NextLink>
           <Text>{game.author || "Unknown"}</Text>

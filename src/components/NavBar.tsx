@@ -51,6 +51,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <Flex align="center">
         <Button
+          mr={2}
+          onClick={() => router.push(`/users/${data.me?.username}`)}
+          size="xs"
+          variant="nav"
+        >
+          Profile
+        </Button>
+        <Button
           onClick={async () => {
             await logout();
             await apolloClient.resetStore();

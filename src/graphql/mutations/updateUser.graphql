@@ -1,3 +1,13 @@
-mutation UpdateUser($id: Int!, $isBanned: Boolean, $isSubmitter: Boolean) {
-  updateUser(id: $id, isBanned: $isBanned, isSubmitter: $isSubmitter)
+mutation UpdateUser(
+  $id: Int!
+  $isBanned: Boolean
+  $isSubmitter: Boolean
+  $isVerified: Boolean
+) {
+  updateUser(
+    id: $id
+    isBanned: $isBanned
+    isSubmitter: $isSubmitter
+    isVerified: $isVerified
+  )
 }

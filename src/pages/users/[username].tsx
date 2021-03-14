@@ -1,15 +1,13 @@
+import { Badge, Box, Flex, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
+import { CommentList } from "../../components/CommentList";
+import { GameCard } from "../../components/GameCard";
 import { Layout } from "../../components/Layout";
+import { UserProfile } from "../../components/profile/UserProfile";
 import { TextSection } from "../../components/TextSection";
 import { useMeQuery, useUserQuery } from "../../generated/graphql";
 import { withApollo } from "../../utils/withApollo";
-import { Badge, Box, Flex, IconButton, Text, VStack } from "@chakra-ui/react";
-import { GameCard } from "../../components/GameCard";
-import { CommentList } from "../../components/CommentList";
-import { EditIcon } from "@chakra-ui/icons";
-import { UserProfile } from "../../components/profile/UserProfile";
-import { AdminControls } from "../../components/profile/AdminControls";
 
 const UserLoading = () => {
   return <Text>Loading...</Text>;

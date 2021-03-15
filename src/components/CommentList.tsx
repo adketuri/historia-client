@@ -6,6 +6,7 @@ import { useState } from "react";
 import { RegularPostFragment, useMeQuery } from "../generated/graphql";
 import { CommentEdit } from "./CommentEdit";
 import { CommentEntry } from "./CommentEntry";
+import { TextChunk } from "./TextChunk";
 
 interface CommentListProps {
   posts: RegularPostFragment[] | undefined | null;
@@ -42,7 +43,7 @@ export const CommentList: React.FC<CommentListProps> = ({
           return (
             <Box key={p.id} pb={5}>
               <Flex>
-                <Text w={"100%"}>{p.body}</Text>
+                <TextChunk text={p.body} />
                 {!editing && p.author?.id === data?.me?.id && (
                   <IconButton
                     aria-label="Edit Comment"

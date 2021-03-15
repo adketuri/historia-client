@@ -8,6 +8,7 @@ import { useRegisterMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { withApollo } from "../utils/withApollo";
 import NextLink from "next/link";
+import { FormHeader } from "../components/FormHeader";
 
 interface RegisterProps {}
 
@@ -17,15 +18,12 @@ export const Register: React.FC<RegisterProps> = () => {
 
   return (
     <Layout variant="small">
-      <Box align="center">
-        <Heading>Register for an account</Heading>
-        <Text mt={5} mb={10}>
-          Already have an account? Please{" "}
-          <NextLink href={"/login"}>
-            <Link variant="pink">sign in.</Link>
-          </NextLink>
-        </Text>
-      </Box>
+      <FormHeader title="Register An Account">
+        Already have an account? Please{" "}
+        <NextLink href={"/login"}>
+          <Link variant="pink">sign in.</Link>
+        </NextLink>
+      </FormHeader>
       <Formik
         initialValues={{ username: "", password: "", email: "" }}
         onSubmit={async (values, { setErrors }) => {

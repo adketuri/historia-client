@@ -11,6 +11,7 @@ import { Form, Formik } from "formik";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { FormHeader } from "../components/FormHeader";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
 import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
@@ -23,15 +24,12 @@ export const Login: React.FC<{}> = () => {
 
   return (
     <Layout variant="small">
-      <Box align="center">
-        <Heading>Sign in to your account</Heading>
-        <Text mt={5} mb={10}>
-          New here? Please{" "}
-          <NextLink href={"/register"}>
-            <Link variant="pink">register first.</Link>
-          </NextLink>
-        </Text>
-      </Box>
+      <FormHeader title="Sign in to your account">
+        New here? Please{" "}
+        <NextLink href={"/register"}>
+          <Link variant="pink">register first.</Link>
+        </NextLink>
+      </FormHeader>
       <Formik
         initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {

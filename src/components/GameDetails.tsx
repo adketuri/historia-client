@@ -20,6 +20,7 @@ import { Layout } from "./Layout";
 import { ScreenshotList } from "./ScreenshotList";
 import { TextSection } from "./TextSection";
 import NextLink from "next/link";
+import { TextChunk } from "./TextChunk";
 
 interface GameDetailsProps {
   game: RegularGameFragment;
@@ -47,10 +48,9 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
       <Box
         position="absolute"
         bottom="0"
-        height="50%"
+        height="100%"
         width="100%"
-        bgGradient="linear(to-b, transparent, black)"
-        opacity="0.6"
+        bgGradient="linear(to-b, #ffffff44, #00000088)"
       />
       <Box w="100%" position="absolute" bottom="0px">
         <Flex mx="auto" maxW="800px">
@@ -89,8 +89,6 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
     </Box>
   );
 
-  console.log(game);
-
   return (
     <>
       <Layout header={header}>
@@ -105,7 +103,9 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <FavoriteButton game={game} preset="lg" />
           </Box>
           <Box flex="3">
-            <TextSection heading="About">{game.longDescription}</TextSection>
+            <TextSection heading="About">
+              <TextChunk text={game.longDescription || "No description"} />
+            </TextSection>
             <TextSection heading="Screenshots">
               <ScreenshotList game={game} />
             </TextSection>

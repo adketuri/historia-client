@@ -52,7 +52,7 @@ export const CommentEntry: React.FC<CommentEntryProps> = ({ gameId }) => {
             placeholder="Say something nice about this game..."
             textarea
           />
-          <Button type="submit" mt={5} isLoading={loading}>
+          <Button type="submit" colorScheme="blue" mt={5} isLoading={loading}>
             Add Comment
           </Button>
         </Form>

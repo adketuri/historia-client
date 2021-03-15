@@ -106,8 +106,8 @@ const theme = extendTheme({
     },
   },
   colors: {
-    black: "#001520", // text color on light theme
-    white: "#d7fcff", // text color on dark theme
+    black: "#003a51", // text color on light theme
+    white: "#f2feff", // text color on dark theme
     transparent: "transparent",
     purple: {
       50: "#f3e7ff",

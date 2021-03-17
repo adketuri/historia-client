@@ -31,7 +31,7 @@ export const SearchBar: React.FC<SearchBarProps> = () => {
   return (
     <Formik initialValues={{}} onSubmit={() => {}}>
       <Form onSubmit={formik.handleSubmit}>
-        <InputGroup w={40} mx={5} bg={"whiteAlpha.200"}>
+        <InputGroup w={[null, "120px", "200px"]} mx={5} bg={"whiteAlpha.200"}>
           <Input
             size="md"
             id="search"

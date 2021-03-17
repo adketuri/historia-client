@@ -26,17 +26,19 @@ export const Footer: React.FC<FooterProps> = () => {
 
   return (
     <Box bg={bgColor[colorMode]}>
-      <Flex mx="auto" maxW={800} py={1} my={5} align="top">
-        <Box flex="4" mr={10}>
-          <FooterAbout />
-        </Box>
-        <Box flex="1" minW={110} mr={10}>
-          <FooterList header="Site Links" links={siteLinks} />
-        </Box>
-        <Box flex="1" minW={140}>
-          <FooterList header="Our Friends" links={externalLinks} external />
-        </Box>
-      </Flex>
+      <Box mx={[5, 10, 20]}>
+        <Flex mx="auto" direction={["column", "row"]} py={1} my={5} align="top">
+          <Box flex="4" mr={10} mb={5}>
+            <FooterAbout />
+          </Box>
+          <Box flex="1" minW={110} mr={10} mb={5}>
+            <FooterList header="Site Links" links={siteLinks} />
+          </Box>
+          <Box flex="1" minW={140}>
+            <FooterList header="Our Friends" links={externalLinks} external />
+          </Box>
+        </Flex>
+      </Box>
     </Box>
   );
 };

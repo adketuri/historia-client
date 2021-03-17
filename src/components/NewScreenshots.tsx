@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Text } from "@chakra-ui/layout";
 import { Flex, Image } from "@chakra-ui/react";
 import * as React from "react";
 import {
@@ -21,6 +21,11 @@ export const NewScreenshots: React.FC<NewScreenshotsProps> = ({
   screenshots,
 }) => {
   const h = 340;
+
+  if (screenshots.length === 0) {
+    return <></>;
+  }
+
   return (
     <TextSection heading="Latest Screenshots">
       <Flex>

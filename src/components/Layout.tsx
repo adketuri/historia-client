@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProps> = ({
 }) => {
   const { colorMode } = useColorMode();
   const bgColor = { light: "white", dark: "black" };
-  const color = { light: "black", dark: "white" };
+  const color = { light: "blue.800", dark: "blue.50" };
 
   return (
     <Flex direction="column" color={color[colorMode]} height="100vh">

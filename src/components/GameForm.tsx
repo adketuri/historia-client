@@ -66,14 +66,18 @@ export const GameForm: React.FC<GameFormProps> = ({ editing, game }) => {
     title: game?.title || "",
     shortDescription: game?.shortDescription || "",
     longDescription: game?.longDescription || "",
-    tags: game?.tags || "",
     author: game?.author || "",
   };
 
   // Convert our InputGroup from an array of strings to a single comma-separated string
-  const [taglist, setTaglist] = useState("");
+  const [taglist, setTaglist] = useState(game?.tags || "");
   const updateCheckboxes = useCallback((value: ReactText[]) => {
-    setTaglist(value.sort().join());
+    setTaglist(
+      value
+        .filter((t) => (t as string).length > 0)
+        .sort()
+        .join()
+    );
   }, []);
 
   // Track our thumbnail and banner urls so they get updated as well
@@ -108,7 +112,7 @@ export const GameForm: React.FC<GameFormProps> = ({ editing, game }) => {
             }
           } else {
             const { data } = await createGame({
-              variables: { input: values },
+              variables: { input },
               update: (cache) => {
                 cache.evict({ fieldName: "games:{}" });
               },
@@ -175,7 +179,7 @@ export const GameForm: React.FC<GameFormProps> = ({ editing, game }) => {
             </Flex>
             <CheckboxGroup
               colorScheme="pink"
-              defaultValue={initialValues.tags.split(",")}
+              defaultValue={taglist.split(",") || []}
               onChange={updateCheckboxes}
             >
               <SimpleGrid minChildWidth={160} spacing={2}>

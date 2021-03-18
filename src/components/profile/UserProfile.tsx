@@ -57,7 +57,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
     <Flex>
       <Box flex="1">
         <Editable
-          defaultValue={user.profile || "No Profile"}
+          defaultValue={user.profile!}
           isPreviewFocusable={false}
           submitOnBlur={false}
           contentEditable={editable}

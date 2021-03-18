@@ -169,9 +169,6 @@ const theme = extendTheme({
       800: "#004e42",
       900: "#001c16",
     },
-    gray: {
-      50: "#ff0000",
-    },
   },
   fonts,
   breakpoints,

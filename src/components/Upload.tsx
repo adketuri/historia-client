@@ -142,7 +142,7 @@ export const Upload: React.FC<UploadProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const textColor = useColorModeValue("gray.900", "gray.50");
+  const textColor = useColorModeValue("blue.900", "blue.50");
 
   let path = undefined;
   if (game) {

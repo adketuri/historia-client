@@ -17,14 +17,14 @@ interface GameIconProps {
 }
 
 export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
-  const bgColor = useColorModeValue("blue.100", "blue.800");
+  const bgColor = useColorModeValue("blue.50", "blue.800");
 
   return (
     <Box shadow="md" bg={bgColor}>
       <Box>
         <Image
           objectFit="cover"
-          height="300px"
+          width="100%"
           src={game.thumbnail! || "https://i.imgur.com/PffO0zx.png"}
         />
         <FavoriteButton
@@ -32,12 +32,14 @@ export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
           preset="sm"
           position="absolute"
           top={1}
-          right={3}
+          right={5}
         />
       </Box>
       <Box ml={5} mr="auto">
         <NextLink href={`games/${game.slug}`}>
-          <Link variant="title">{game.title || "Untitled"}</Link>
+          <Link variant="title" fontSize={["sm", "md", "lg"]}>
+            {game.title || "Untitled"}
+          </Link>
         </NextLink>
         <Text fontSize="sm">{game.author || "Unknown"}</Text>
       </Box>

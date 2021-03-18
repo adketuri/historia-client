@@ -2,6 +2,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
+  Button,
   Flex,
   Heading,
   IconButton,
@@ -52,40 +53,6 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
         width="100%"
         bgGradient="linear(to-b, #ffffff44, #00000088)"
       />
-      <Box w="100%" position="absolute" bottom="0px">
-        <Flex mx="auto" maxW="800px">
-          <Spacer flex="1" mx="20px" />
-          <Box flex="3">
-            <Heading color="gray.100" as="h1" size="lg" mb="5px">
-              {game.title}
-              {canEdit && (
-                <IconButton
-                  ml={1}
-                  size="sm"
-                  variant="ghost"
-                  aria-label="Edit Game"
-                  onClick={() => router.push(`/games/edit/${game.slug}`)}
-                  icon={<EditIcon />}
-                />
-              )}
-            </Heading>
-            <Heading color="gray.200" as="h2" size="md" mb="5px">
-              {game.author}
-            </Heading>
-            <Heading color="gray.200" as="h2" size="md" mb="15px">
-              {game.year}
-            </Heading>
-            {game?.tags?.split(",").map(
-              (tag) =>
-                tag.length > 0 && (
-                  <Badge key={tag} mb="15px" mr="5px">
-                    {tag}
-                  </Badge>
-                )
-            )}
-          </Box>
-        </Flex>
-      </Box>
     </Box>
   );
 
@@ -103,6 +70,36 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
             <FavoriteButton game={game} preset="lg" />
           </Box>
           <Box flex="3">
+            <Box position="absolute" top="200px">
+              <Heading color="blue.50" as="h1" size="lg" mb="5px">
+                {game.title}
+                {canEdit && (
+                  <IconButton
+                    ml={1}
+                    size="sm"
+                    variant="ghost"
+                    color="blue.50"
+                    aria-label="Edit Game"
+                    onClick={() => router.push(`/games/edit/${game.slug}`)}
+                    icon={<EditIcon />}
+                  />
+                )}
+              </Heading>
+              <Heading color="blue.100" as="h2" size="md" mb="5px">
+                {game.author || "Unknown Author"}
+              </Heading>
+              <Heading color="blue.100" as="h2" size="md" mb="15px">
+                {game.year || "2000"}
+              </Heading>
+              {game?.tags?.split(",").map(
+                (tag) =>
+                  tag.length > 0 && (
+                    <Badge key={tag} mb="15px" mr="5px">
+                      {tag}
+                    </Badge>
+                  )
+              )}
+            </Box>
             <TextSection heading="About">
               <TextChunk text={game.longDescription || "No description"} />
             </TextSection>
@@ -114,15 +111,17 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
                 <DownloadList game={game} />
               </TextSection>
             )}
-            <TextSection heading="Comments">
+            <TextSection heading="Comments" spacer={false}>
               <CommentList posts={game.posts} gameId={game.id} />
             </TextSection>
-            <Text my="20px" fontSize="sm">
-              Submitted by{" "}
-              <NextLink href={`../users/${game.submitter.username}`}>
-                <Link variant="comment">{game.submitter.username}</Link>
-              </NextLink>
-            </Text>
+            <Flex ml="auto" mr={0}>
+              <Text my="20px" mr={0} ml={"auto"} fontSize="xs">
+                Submitted by{" "}
+                <NextLink href={`../users/${game.submitter.username}`}>
+                  <Link variant="comment">{game.submitter.username}</Link>
+                </NextLink>
+              </Text>
+            </Flex>
           </Box>
         </Flex>
       </Layout>

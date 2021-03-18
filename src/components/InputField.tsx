@@ -12,18 +12,23 @@ import { useField } from "formik";
 import React from "react";
 import NextLink from "next/link";
 import { InputHTMLAttributes } from "react";
+import { InfoButton } from "./InfoButton";
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   textarea?: boolean;
   forgotPassword?: boolean;
+  info?: string;
+  ref?: any;
 };
 
 export const InputField: React.FC<InputFieldProps> = ({
   label,
   textarea,
   forgotPassword,
+  ref,
+  info,
   size: _,
   ...props
 }) => {
@@ -42,8 +47,10 @@ export const InputField: React.FC<InputFieldProps> = ({
               </Link>
             </NextLink>
           )}
+          {info && <InfoButton text={info} />}
         </Flex>
         <InputOrTextArea
+          ref={ref}
           {...field}
           {...props}
           id={field.name}

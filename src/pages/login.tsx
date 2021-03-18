@@ -73,7 +73,7 @@ export const Login: React.FC<{}> = () => {
               forgotPassword
             />
             <Button
-              mt={5}
+              my={10}
               w="100%"
               type="submit"
               isLoading={isSubmitting}

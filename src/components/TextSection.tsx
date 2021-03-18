@@ -11,11 +11,13 @@ import { ChunkyDivider } from "./ChunkyDivider";
 
 interface TextSectionProps {
   heading: string;
+  spacer?: boolean;
 }
 
 export const TextSection: React.FC<TextSectionProps> = ({
   heading,
   children,
+  spacer = true,
 }) => {
   return (
     <>
@@ -24,7 +26,7 @@ export const TextSection: React.FC<TextSectionProps> = ({
       </Heading>
       <ChunkyDivider mb={4} />
       {children}
-      <Spacer h={10} />
+      {spacer && <Spacer h={10} />}
     </>
   );
 };

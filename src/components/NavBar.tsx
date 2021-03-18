@@ -1,7 +1,5 @@
-import { useApolloClient } from "@apollo/client";
 import {
   Box,
-  Button,
   Flex,
   Link,
   useBreakpointValue,
@@ -10,8 +8,6 @@ import {
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { useLogoutMutation, useMeQuery } from "../generated/graphql";
-import { isServer } from "../utils/isServer";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { MenuLinks } from "./MenuLinks";
 import { MobileMenu } from "./MobileMenu";
@@ -32,7 +28,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   const bgColor = { light: "pink.300", dark: "pink.700" };
 
   return (
-    <Box bg={bgColor[colorMode]}>
+    <Box bg={bgColor[colorMode]} zIndex={10} top={0} position="sticky">
       <Box mx={[5, 10, 20]}>
         <Flex mx="auto" py={1} align="center">
           <NextLink href={"/"}>

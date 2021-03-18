@@ -21,7 +21,7 @@ const Index = () => {
         <>
           <PromotedGames games={data.homepage.promotedGames} />
           <NewScreenshots screenshots={data.homepage.newScreenshots} />
-          <Flex>
+          <Flex direction={["column", "row"]}>
             <NewGamesColumn data={data.homepage.newGames} />
             <NewCommentsColumn data={data.homepage.newPosts} />
           </Flex>

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
-import { useRegisterMutation } from "../generated/graphql";
+import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { withApollo } from "../utils/withApollo";
 import NextLink from "next/link";
@@ -27,7 +27,19 @@ export const Register: React.FC<RegisterProps> = () => {
       <Formik
         initialValues={{ username: "", password: "", email: "" }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await register({ variables: { options: values } });
+          const response = await register({
+            variables: { options: values },
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.register.user,
+                },
+              });
+              cache.evict({ fieldName: "posts:{}" });
+            },
+          });
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
           } else if (response.data?.register.user) {
@@ -42,7 +54,12 @@ export const Register: React.FC<RegisterProps> = () => {
               placeholder="username"
               label="Username"
             />
-            <InputField name="email" placeholder="email" label="Email" />
+            <InputField
+              name="email"
+              placeholder="email"
+              label="Email"
+              info="We value your privacy! Your email is kept private and only used to verify your account."
+            />
             <InputField
               name="password"
               placeholder="password"
@@ -50,7 +67,7 @@ export const Register: React.FC<RegisterProps> = () => {
               type="password"
             />
             <Button
-              mt={5}
+              my={10}
               w="100%"
               type="submit"
               isLoading={isSubmitting}

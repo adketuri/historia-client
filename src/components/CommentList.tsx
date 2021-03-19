@@ -17,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import * as React from "react";
-import { useRef } from "react";
 import { useState } from "react";
 import {
   RegularGameFragmentDoc,
@@ -31,7 +30,7 @@ import { CommentEntry } from "./CommentEntry";
 import { TextChunk } from "./TextChunk";
 
 interface CommentListProps {
-  posts: RegularPostFragment[] | SimplePostFragment[] | undefined | null;
+  posts?: RegularPostFragment[] | SimplePostFragment[] | undefined | null;
   gameId?: number;
   username?: string;
 }
@@ -111,65 +110,68 @@ export const CommentList: React.FC<CommentListProps> = ({
         </AlertDialogOverlay>
       </AlertDialog>
 
-      {posts &&
-        posts.map((p: RegularPostFragment | SimplePostFragment) => {
-          const date = new Date(parseInt(p.createdAt));
-          const linkPrefix = "Posted by ";
-          const linkSuffix = " on " + date.toLocaleDateString();
-          const author = (p as RegularPostFragment).author
-            ? (p as RegularPostFragment).author
-            : undefined;
-          const displayUsername = username ? username : author?.username;
+      {posts !== null &&
+        posts !== undefined &&
+        (posts as Array<RegularPostFragment | SimplePostFragment>).map(
+          (p: RegularPostFragment | SimplePostFragment) => {
+            const date = new Date(parseInt(p.createdAt));
+            const linkPrefix = "Posted by ";
+            const linkSuffix = " on " + date.toLocaleDateString();
+            const author = (p as RegularPostFragment).author
+              ? (p as RegularPostFragment).author
+              : undefined;
+            const displayUsername = username ? username : author?.username;
 
-          if (editing === p.id)
+            if (editing === p.id)
+              return (
+                <CommentEdit
+                  key={p.id}
+                  post={p as RegularPostFragment}
+                  onCancel={() => setEditing(undefined)}
+                />
+              );
+
             return (
-              <CommentEdit
-                key={p.id}
-                post={p as RegularPostFragment}
-                onCancel={() => setEditing(undefined)}
-              />
+              <Box key={p.id} pb={5}>
+                <Flex>
+                  <TextChunk text={p.body} />
+                  {!editing && author?.id === data?.me?.id && (
+                    <IconButton
+                      aria-label="Edit Comment"
+                      icon={<EditIcon />}
+                      variant="ghost"
+                      size="xs"
+                      onClick={() => setEditing(p.id)}
+                    />
+                  )}
+                  {(data?.me?.isAdmin || author?.id === data?.me?.id) && (
+                    <IconButton
+                      aria-label="Delete Comment"
+                      icon={<DeleteIcon />}
+                      variant="ghost"
+                      size="xs"
+                      ml={1}
+                      onClick={() => {
+                        setDeletingId(p.id);
+                        setIsOpen(true);
+                      }}
+                    />
+                  )}
+                </Flex>
+                <Flex>
+                  <Spacer />
+                  <Text as="i" fontSize="xs">
+                    {linkPrefix}
+                    <NextLink href={`../users/${displayUsername}`}>
+                      <Link variant="comment">{displayUsername}</Link>
+                    </NextLink>
+                    {linkSuffix}
+                  </Text>
+                </Flex>
+              </Box>
             );
-
-          return (
-            <Box key={p.id} pb={5}>
-              <Flex>
-                <TextChunk text={p.body} />
-                {!editing && author?.id === data?.me?.id && (
-                  <IconButton
-                    aria-label="Edit Comment"
-                    icon={<EditIcon />}
-                    variant="ghost"
-                    size="xs"
-                    onClick={() => setEditing(p.id)}
-                  />
-                )}
-                {(data?.me?.isAdmin || author?.id === data?.me?.id) && (
-                  <IconButton
-                    aria-label="Delete Comment"
-                    icon={<DeleteIcon />}
-                    variant="ghost"
-                    size="xs"
-                    ml={1}
-                    onClick={() => {
-                      setDeletingId(p.id);
-                      setIsOpen(true);
-                    }}
-                  />
-                )}
-              </Flex>
-              <Flex>
-                <Spacer />
-                <Text as="i" fontSize="xs">
-                  {linkPrefix}
-                  <NextLink href={`../users/${displayUsername}`}>
-                    <Link variant="comment">{displayUsername}</Link>
-                  </NextLink>
-                  {linkSuffix}
-                </Text>
-              </Flex>
-            </Box>
-          );
-        })}
+          }
+        )}
       {!data?.me?.isBanned && data?.me?.isVerified && gameId && (
         <CommentEntry gameId={gameId} />
       )}

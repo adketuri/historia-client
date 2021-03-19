@@ -25,14 +25,14 @@ export const CommentEdit: React.FC<CommentEditProps> = ({ post, onCancel }) => {
           try {
             await updatePost({
               variables: { id: post.id, body: values.body },
-              update: (cache, { data: { updatePost } }) => {
-                const data: any = cache.readFragment({
+              update: (cache, { data }) => {
+                const readData: any = cache.readFragment({
                   id: `Post:${post.id}`,
                   fragmentName: "RegularPost",
                   fragment: RegularPostFragmentDoc,
                 });
-                const newData = { ...data };
-                newData.body = updatePost.body;
+                const newData = { ...readData };
+                newData.body = data?.updatePost?.body;
                 cache.writeFragment({
                   id: `Post:${post.id}`,
                   fragmentName: "RegularPost",

@@ -22,15 +22,14 @@ export const CommentEntry: React.FC<CommentEntryProps> = ({ gameId }) => {
           try {
             await createPost({
               variables: { gameId, body: values.body },
-              update: (cache, { data: { createPost } }) => {
-                console.log(cache);
-                const data: any = cache.readFragment({
+              update: (cache, { data }) => {
+                const readData: any = cache.readFragment({
                   id: `Game:${gameId}`,
                   fragmentName: "RegularGame",
                   fragment: RegularGameFragmentDoc,
                 });
-                const newData = { ...data };
-                newData.posts = [...data.posts, createPost];
+                const newData = { ...readData };
+                newData.posts = [...readData.posts, data?.createPost];
                 cache.writeFragment({
                   id: `Game:${gameId}`,
                   fragmentName: "RegularGame",

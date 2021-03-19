@@ -10,10 +10,7 @@ fragment RegularUser on User {
     ...RegularGame
   }
   posts {
-    id
-    createdAt
-    updatedAt
-    body
+    ...SimplePost
   }
   favorites {
     ...RegularGame

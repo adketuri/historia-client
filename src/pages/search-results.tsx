@@ -30,7 +30,7 @@ const SearchResults = () => {
           )}
           <VStack spacing={5}>
             {data.findGames.map((g) => (
-              <GameCard key={g.id} game={g} width={"100%"} />
+              <GameCard key={g.id} game={g} />
             ))}
           </VStack>
         </>

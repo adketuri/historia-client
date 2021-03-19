@@ -338,7 +338,7 @@ export type RegularUserFragment = (
     & RegularGameFragment
   )>, posts?: Maybe<Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+    & SimplePostFragment
   )>>, favorites: Array<(
     { __typename?: 'Game' }
     & RegularGameFragment
@@ -354,6 +354,11 @@ export type RegularUserResponseFragment = (
     { __typename?: 'FieldError' }
     & RegularErrorFragment
   )>> }
+);
+
+export type SimplePostFragment = (
+  { __typename?: 'Post' }
+  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'body'>
 );
 
 export type ChangePasswordMutationVariables = Exact<{
@@ -745,6 +750,14 @@ export const RegularGameFragmentDoc = gql`
     ${RegularPostFragmentDoc}
 ${RegularScreenshotFragmentDoc}
 ${RegularDownloadFragmentDoc}`;
+export const SimplePostFragmentDoc = gql`
+    fragment SimplePost on Post {
+  id
+  createdAt
+  updatedAt
+  body
+}
+    `;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
@@ -758,16 +771,14 @@ export const RegularUserFragmentDoc = gql`
     ...RegularGame
   }
   posts {
-    id
-    createdAt
-    updatedAt
-    body
+    ...SimplePost
   }
   favorites {
     ...RegularGame
   }
 }
-    ${RegularGameFragmentDoc}`;
+    ${RegularGameFragmentDoc}
+${SimplePostFragmentDoc}`;
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
   field

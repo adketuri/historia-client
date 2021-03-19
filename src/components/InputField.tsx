@@ -14,7 +14,9 @@ import NextLink from "next/link";
 import { InputHTMLAttributes } from "react";
 import { InfoButton } from "./InfoButton";
 
-type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+type InputFieldProps = InputHTMLAttributes<
+  HTMLInputElement & HTMLTextAreaElement
+> & {
   label: string;
   name: string;
   textarea?: boolean;
@@ -32,8 +34,6 @@ export const InputField: React.FC<InputFieldProps> = ({
   size: _,
   ...props
 }) => {
-  let InputOrTextArea = Input;
-  if (textarea) InputOrTextArea = Textarea;
   const [field, { error }] = useField(props);
   return (
     <Box mt={5}>
@@ -49,13 +49,22 @@ export const InputField: React.FC<InputFieldProps> = ({
           )}
           {info && <InfoButton text={info} />}
         </Flex>
-        <InputOrTextArea
-          ref={ref}
-          {...field}
-          {...props}
-          id={field.name}
-          placeholder={props.placeholder}
-        />
+        {textarea ? (
+          <Textarea
+            {...field}
+            {...props}
+            id={field.name}
+            placeholder={props.placeholder}
+          />
+        ) : (
+          <Input
+            {...field}
+            {...props}
+            id={field.name}
+            placeholder={props.placeholder}
+          />
+        )}
+
         {error && <FormErrorMessage>{error}</FormErrorMessage>}
       </FormControl>
     </Box>

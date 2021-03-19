@@ -1,0 +1,6 @@
+fragment SimplePost on Post {
+  id
+  createdAt
+  updatedAt
+  body
+}

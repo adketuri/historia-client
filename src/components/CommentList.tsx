@@ -22,6 +22,7 @@ import { useState } from "react";
 import {
   RegularGameFragmentDoc,
   RegularPostFragment,
+  SimplePostFragment,
   useDeletePostMutation,
   useMeQuery,
 } from "../generated/graphql";
@@ -30,7 +31,7 @@ import { CommentEntry } from "./CommentEntry";
 import { TextChunk } from "./TextChunk";
 
 interface CommentListProps {
-  posts: RegularPostFragment[] | undefined | null;
+  posts: RegularPostFragment[] | SimplePostFragment[] | undefined | null;
   gameId?: number;
   username?: string;
 }
@@ -45,7 +46,7 @@ export const CommentList: React.FC<CommentListProps> = ({
 
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
-  const cancelRef = React.useRef();
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   const color = useColorModeValue("black", "white");
 
@@ -71,11 +72,7 @@ export const CommentList: React.FC<CommentListProps> = ({
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button
-                colorScheme="blue"
-                ref={cancelRef.current}
-                onClick={onClose}
-              >
+              <Button colorScheme="blue" ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
               <Button
@@ -85,15 +82,14 @@ export const CommentList: React.FC<CommentListProps> = ({
                     variables: {
                       id: deletingId,
                     },
-                    update: (cache, { data: { deletePost } }) => {
-                      console.log(cache);
-                      const data: any = cache.readFragment({
+                    update: (cache, { data }) => {
+                      const readData: any = cache.readFragment({
                         id: `Game:${gameId}`,
                         fragmentName: "RegularGame",
                         fragment: RegularGameFragmentDoc,
                       });
-                      const newData = { ...data };
-                      newData.posts = data.posts.filter(
+                      const newData = { ...readData };
+                      newData.posts = readData.posts.filter(
                         (p: RegularPostFragment) => p.id !== deletingId
                       );
                       cache.writeFragment({
@@ -116,17 +112,20 @@ export const CommentList: React.FC<CommentListProps> = ({
       </AlertDialog>
 
       {posts &&
-        posts.map((p) => {
+        posts.map((p: RegularPostFragment | SimplePostFragment) => {
           const date = new Date(parseInt(p.createdAt));
           const linkPrefix = "Posted by ";
           const linkSuffix = " on " + date.toLocaleDateString();
-          const displayUsername = username ? username : p.author.username;
+          const author = (p as RegularPostFragment).author
+            ? (p as RegularPostFragment).author
+            : undefined;
+          const displayUsername = username ? username : author?.username;
 
           if (editing === p.id)
             return (
               <CommentEdit
                 key={p.id}
-                post={p}
+                post={p as RegularPostFragment}
                 onCancel={() => setEditing(undefined)}
               />
             );
@@ -135,7 +134,7 @@ export const CommentList: React.FC<CommentListProps> = ({
             <Box key={p.id} pb={5}>
               <Flex>
                 <TextChunk text={p.body} />
-                {!editing && p.author?.id === data?.me?.id && (
+                {!editing && author?.id === data?.me?.id && (
                   <IconButton
                     aria-label="Edit Comment"
                     icon={<EditIcon />}
@@ -144,7 +143,7 @@ export const CommentList: React.FC<CommentListProps> = ({
                     onClick={() => setEditing(p.id)}
                   />
                 )}
-                {(data?.me?.isAdmin || p.author?.id === data?.me?.id) && (
+                {(data?.me?.isAdmin || author?.id === data?.me?.id) && (
                   <IconButton
                     aria-label="Delete Comment"
                     icon={<DeleteIcon />}

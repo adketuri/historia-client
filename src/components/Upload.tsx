@@ -56,14 +56,17 @@ const S3Uploader: React.FC<S3UploaderProps> = ({
           url: info.fileUrl,
           gameId,
         },
-        update: (cache, { data: { createScreenshot } }) => {
-          const data: any = cache.readFragment({
+        update: (cache, { data }) => {
+          const readData: any = cache.readFragment({
             id: `Game:${gameId}`,
             fragmentName: "RegularGame",
             fragment: RegularGameFragmentDoc,
           });
-          const newData = { ...data };
-          newData.screenshots = [...data.screenshots, createScreenshot];
+          const newData = { ...readData };
+          newData.screenshots = [
+            ...readData.screenshots,
+            data?.createScreenshot,
+          ];
           cache.writeFragment({
             id: `Game:${gameId}`,
             fragmentName: "RegularGame",
@@ -78,15 +81,15 @@ const S3Uploader: React.FC<S3UploaderProps> = ({
           url: info.fileUrl,
           gameId,
         },
-        update: (cache, { data: { createDownload } }) => {
-          const data: any = cache.readFragment({
+        update: (cache, { data }) => {
+          const readData: any = cache.readFragment({
             id: `Game:${gameId}`,
             fragmentName: "RegularGame",
             fragment: RegularGameFragmentDoc,
           });
-          const newData = { ...data };
-          if (data.downloads) {
-            newData.downloads = [...data.downloads, createDownload];
+          const newData = { ...readData };
+          if (readData.downloads) {
+            newData.downloads = [...readData.downloads, data?.createDownload];
           } else {
             newData.downloads = [createDownload];
           }

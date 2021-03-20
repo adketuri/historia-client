@@ -35,10 +35,10 @@ export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
           right={5}
         />
       </Box>
-      <Box ml={5} mr="auto">
+      <Box ml={[1, 3, 5]} mr="auto">
         <NextLink href={`games/${game.slug}`}>
           <Link variant="title" fontSize={["sm", "md", "lg"]}>
-            {game.title || "Untitled"}
+            <Text noOfLines={1}>{game.title || "Untitled"}</Text>
           </Link>
         </NextLink>
         <Text fontSize="sm">{game.author || "Unknown"}</Text>

@@ -13,15 +13,11 @@ import { MenuLinks } from "./MenuLinks";
 import { MobileMenu } from "./MobileMenu";
 import { SearchBar } from "./SearchBar";
 import { UserControls } from "./UserControls";
+import { VerificationReminder } from "./VerificationReminder";
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-  const showHamburger = useBreakpointValue({
-    base: true,
-    sm: false,
-    md: false,
-  });
-  const router = useRouter();
+  const showHamburger = useBreakpointValue({ base: true, sm: false });
 
   // Dark vs Light mode color values
   const { colorMode } = useColorMode();
@@ -29,6 +25,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
   return (
     <Box bg={bgColor[colorMode]} zIndex={10} top={0} position="sticky">
+      {/* <VerificationReminder /> */}
       <Box mx={[5, 10, 20]}>
         <Flex mx="auto" py={1} align="center">
           <NextLink href={"/"}>

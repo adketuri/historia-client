@@ -47,7 +47,7 @@ export const Register: React.FC<RegisterProps> = () => {
           }
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values }) => (
           <Form>
             <InputField
               name="username"
@@ -72,6 +72,11 @@ export const Register: React.FC<RegisterProps> = () => {
               type="submit"
               isLoading={isSubmitting}
               colorScheme="blue"
+              disabled={
+                values.username.length === 0 ||
+                values.email.length === 0 ||
+                values.password.length === 0
+              }
             >
               Register
             </Button>

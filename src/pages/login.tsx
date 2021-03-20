@@ -58,7 +58,7 @@ export const Login: React.FC<{}> = () => {
           }
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values }) => (
           <Form>
             <InputField
               name="usernameOrEmail"
@@ -77,6 +77,10 @@ export const Login: React.FC<{}> = () => {
               w="100%"
               type="submit"
               isLoading={isSubmitting}
+              disabled={
+                values.usernameOrEmail.length === 0 ||
+                values.password.length === 0
+              }
               colorScheme="blue"
             >
               Sign In

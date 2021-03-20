@@ -9,7 +9,7 @@ interface NewGamesColumnProps {
 
 export const NewGamesColumn: React.FC<NewGamesColumnProps> = ({ data }) => {
   return (
-    <Box mr="auto" minWidth={300}>
+    <Box mr="auto" flex={1}>
       <TextSection heading="Recently-Added Games">
         {data.map((g) => {
           const date = new Date(parseInt(g.createdAt)).toLocaleDateString();

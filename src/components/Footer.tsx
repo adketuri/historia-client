@@ -9,15 +9,15 @@ const siteLinks = [
   { text: "Home", url: "/" },
   { text: "Games", url: "/browse" },
   { text: "About", url: "/about" },
-  { text: "Terms of Service", url: "#" },
-  { text: "Privacy Policy", url: "#" },
+  { text: "Terms of Service", url: "/terms-of-service" },
+  { text: "Privacy Policy", url: "/privacy-policy" },
 ];
 
 const externalLinks = [
   { text: "RPGMaker.net", url: "https://rpgmaker.net/" },
   { text: "RPG Maker Historia", url: "https://rpgmakerhistoria.home.blog/" },
   { text: "RPG Maker Archive", url: "https://www.rpgmakerarchive.net/" },
-  { text: "Alcuria Games", url: "https://www.alcuria.net/" },
+  { text: "Alcuria Games", url: "https://discord.com/invite/jC3D2sU" },
 ];
 
 export const Footer: React.FC<FooterProps> = () => {

@@ -23,13 +23,22 @@ export const ForgotPassword: React.FC<{}> = ({}) => {
           setComplete(true);
         }}
       >
-        {({ isSubmitting }) =>
+        {({ isSubmitting, values }) =>
           complete ? (
-            <Box>Check your email!</Box>
+            <Box>Check your email for instructions to reset your password!</Box>
           ) : (
             <Form>
               <InputField name="email" placeholder="Email" label="Email" />
-              <Button type="submit" isLoading={isSubmitting} colorScheme="teal">
+              <Button
+                my={10}
+                w="100%"
+                type="submit"
+                isLoading={isSubmitting}
+                disabled={
+                  values.email.length === 0 || !values.email.includes("@")
+                }
+                colorScheme="blue"
+              >
                 Help Me!
               </Button>
             </Form>

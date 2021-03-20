@@ -11,7 +11,7 @@ export const NewCommentsColumn: React.FC<NewCommentsColumnProps> = ({
   data,
 }) => {
   return (
-    <Box mr="auto">
+    <Box mr="auto" flex={1}>
       <TextSection heading="Latest Comments">
         {data.map((p, i) => (
           <Box mb={3} key={i + p.body}>

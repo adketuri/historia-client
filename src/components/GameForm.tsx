@@ -64,9 +64,10 @@ export const GameForm: React.FC<GameFormProps> = ({ editing, game }) => {
 
   const initialValues = {
     title: game?.title || "",
+    author: game?.author || "",
+    year: game?.year || "",
     shortDescription: game?.shortDescription || "",
     longDescription: game?.longDescription || "",
-    author: game?.author || "",
   };
 
   // Convert our InputGroup from an array of strings to a single comma-separated string
@@ -88,7 +89,7 @@ export const GameForm: React.FC<GameFormProps> = ({ editing, game }) => {
     <>
       <FormHeader title={editing ? "Update Game" : "Submit New Game"}>
         {editing
-          ? "Update fields below. Be sure to save when you're done."
+          ? "Update the game below. Be sure to save when you're done."
           : "Thanks for your interest in submitting a new game! Please fill out as many fields as possible. Screenshots and downloads can be added after submitting."}
       </FormHeader>
       <Formik
@@ -139,7 +140,7 @@ export const GameForm: React.FC<GameFormProps> = ({ editing, game }) => {
             />
             <InputField
               name="year"
-              type={"number"}
+              type="number"
               placeholder="Release Year"
               label="Release Year"
             />

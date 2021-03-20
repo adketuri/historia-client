@@ -1,9 +1,20 @@
 import { useApolloClient } from "@apollo/client";
 import { Button, Flex } from "@chakra-ui/react";
-import router from "next/router";
+import router, { SingletonRouter } from "next/router";
 import * as React from "react";
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
+
+// Converts router.pathname to a navigatable url
+// eg., "games/[slug]" => "games/dragon-heart"
+// This is probably built in somewhere but...??
+const getNextPage = (router: SingletonRouter) => {
+  let path = router.pathname;
+  Object.entries(router.query).forEach(
+    ([key, value]) => (path = path.replace(`[${key}]`, `${value}`))
+  );
+  return path;
+};
 
 interface UserControlsProps {
   vertical?: boolean;
@@ -23,14 +34,14 @@ export const UserControls: React.FC<UserControlsProps> = ({ vertical }) => {
       <Flex direction={vertical ? "column" : "row"}>
         <Button
           mr={2}
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/login?next=" + getNextPage(router))}
           size={vertical ? "xl" : "xs"}
           variant="nav"
         >
           Login
         </Button>
         <Button
-          onClick={() => router.push("/register")}
+          onClick={() => router.push("/register?next=" + getNextPage(router))}
           size="xs"
           variant="nav"
         >

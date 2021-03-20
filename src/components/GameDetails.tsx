@@ -44,7 +44,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
         w="100%"
         objectFit="cover"
         h="300px"
-        sx={{ filter: "blur(16px)" }}
+        sx={{ transform: "scale(1.3)", filter: "blur(16px)" }}
       />
       <Box
         position="absolute"

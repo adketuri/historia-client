@@ -1,6 +1,7 @@
 import { AddIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import {
   Button,
+  Flex,
   IconButton,
   Modal,
   ModalBody,
@@ -109,22 +110,24 @@ const S3Uploader: React.FC<S3UploaderProps> = ({
     s3path: path,
     accept:
       type === "download"
-        ? "application/zip,application/x-rar-compressed"
+        ? "application/zip,application/x-rar-compressed,application/octet-stream,application/x-zip-compressed,multipart/x-zip"
         : "image/png",
     signingUrlQueryParams: { uploadType: type },
   };
   const textColor = useColorModeValue("blue.900", "blue.50");
-
+  const sizeMb = type === "download" ? 150 : 1;
   return (
-    <>
-      <Text color={textColor}>Drop {type}s below!</Text>
+    <Flex align="center" direction="column">
       <DropzoneS3Uploader
         onFinish={handleFinishedUpload}
         s3Url={process.env.NEXT_PUBLIC_S3_URL}
-        maxSize={1024 * 1024 * 5}
+        maxSize={1024 * 1024 * sizeMb}
         upload={uploadOptions}
       />
-    </>
+      <Text color={textColor} fontSize="sm" mt={5}>
+        Max filesize is {sizeMb}mb
+      </Text>
+    </Flex>
   );
 };
 
@@ -171,7 +174,10 @@ export const Upload: React.FC<UploadProps> = ({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color={textColor}>{`Add ${type}`}</ModalHeader>
+          <ModalHeader
+            align="center"
+            color={textColor}
+          >{`Drop ${type}s below!`}</ModalHeader>
           <ModalCloseButton color={textColor} />
           <ModalBody>
             {game && path && (

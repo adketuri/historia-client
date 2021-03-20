@@ -15,6 +15,7 @@ import {
 import "pure-react-carousel/dist/react-carousel.es.css";
 import * as React from "react";
 import { RegularGameFragment } from "../generated/graphql";
+import { CarouselControls } from "./CarouselControls";
 import { GameIcon } from "./GameIcon";
 import { TextSection } from "./TextSection";
 
@@ -23,7 +24,6 @@ interface PromotedGamesProps {
 }
 
 export const PromotedGames: React.FC<PromotedGamesProps> = ({ games }) => {
-  const color = useColorModeValue("white", "black");
   const slides = useBreakpointValue({ base: 2, sm: 3, md: 4, lg: 5 });
   const spacer = useBreakpointValue({ base: false, sm: true });
   return (
@@ -48,36 +48,7 @@ export const PromotedGames: React.FC<PromotedGamesProps> = ({ games }) => {
                 </Slide>
               ))}
             </Slider>
-            <Box
-              pos="absolute"
-              top="30%"
-              left={0}
-              p={2}
-              pb={3}
-              ml={2}
-              bg={color}
-              rounded="lg"
-              opacity={0.5}
-            >
-              <ButtonBack>
-                <ArrowLeftIcon />
-              </ButtonBack>
-            </Box>
-            <Box
-              pos="absolute"
-              top="30%"
-              right={0}
-              p={2}
-              pb={3}
-              mr={2}
-              bg={color}
-              rounded="lg"
-              opacity={0.5}
-            >
-              <ButtonNext>
-                <ArrowRightIcon />
-              </ButtonNext>
-            </Box>
+            <CarouselControls />
           </CarouselProvider>
         </Box>
       </TextSection>

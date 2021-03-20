@@ -1,13 +1,5 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { Box, Button, IconButton, Image, Text } from "@chakra-ui/react";
-import {
-  ButtonBack,
-  ButtonNext,
-  ButtonLast,
-  CarouselProvider,
-  Slide,
-  Slider,
-} from "pure-react-carousel";
+import { Box, Image, Text } from "@chakra-ui/react";
+import { CarouselProvider, Slide, Slider } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import * as React from "react";
 import { useRef } from "react";
@@ -16,6 +8,7 @@ import {
   RegularScreenshotFragment,
   useMeQuery,
 } from "../generated/graphql";
+import { CarouselControls } from "./CarouselControls";
 import { Upload } from "./Upload";
 
 interface ScreenshotListProps {
@@ -56,16 +49,7 @@ export const ScreenshotList: React.FC<ScreenshotListProps> = ({
                 </Slide>
               ))}
             </Slider>
-            <Box pos="absolute" top="40%" left={0}>
-              <ButtonBack>
-                <ArrowLeftIcon />
-              </ButtonBack>
-            </Box>
-            <Box pos="absolute" top="40%" right={0}>
-              <ButtonNext>
-                <ArrowRightIcon />
-              </ButtonNext>
-            </Box>
+            <CarouselControls offset="40%" />
             {/* <ButtonLast ref={lastRef.current}>last</ButtonLast> */}
             {/* <Button onClick={() => console.log(lastRef)}>Last REF?</Button> */}
           </>

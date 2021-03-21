@@ -23,13 +23,15 @@ export const NewGamesColumn: React.FC<NewGamesColumnProps> = ({ data }) => {
                 h={12}
                 mr={3}
               />
-              <Box>
-                <Text fontSize="sm">
+              <Box mr={5}>
+                <Text fontSize="sm" noOfLines={1}>
                   <NextLink href={`/games/${g.slug}`}>
-                    <Link>{g.title}</Link>
+                    <Link variant="comment">{g.title}</Link>
                   </NextLink>
                 </Text>
-                <Text fontSize="sm">{date}</Text>
+                <Text noOfLines={1} fontSize="xs">
+                  {g.author || "Unknown"}
+                </Text>
               </Box>
             </Flex>
           );

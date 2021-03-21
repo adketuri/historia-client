@@ -18,10 +18,10 @@ export const NewCommentsColumn: React.FC<NewCommentsColumnProps> = ({
             <Text fontSize="sm" noOfLines={1}>
               {p.body}
             </Text>
-            <Text fontSize="sm">
+            <Text fontSize="xs">
               on{" "}
               <NextLink href={`/games/${p.game.slug}`}>
-                <Link>{p.game.title}</Link>
+                <Link variant="comment">{p.game.title}</Link>
               </NextLink>
             </Text>
           </Box>

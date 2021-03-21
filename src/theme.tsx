@@ -53,7 +53,11 @@ const theme = extendTheme({
           },
         }),
         comment: (props) => ({
-          color: props.colorMode === "dark" ? "teal.200" : "teal.700",
+          color: props.colorMode === "dark" ? "teal.300" : "teal.700",
+          _hover: {
+            color: props.colorMode === "dark" ? "teal.100" : "teal.900",
+            textDecoration: "none",
+          },
         }),
         footerLink: (props) => ({
           color: props.colorMode === "dark" ? "yellow.500" : "yellow.700",

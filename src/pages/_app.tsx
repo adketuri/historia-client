@@ -1,5 +1,6 @@
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 import React from "react";
+import { VerificationProvider } from "../components/VerificationProvider";
 import theme from "../theme";
 
 function MyApp({ Component, pageProps }: any) {
@@ -11,7 +12,9 @@ function MyApp({ Component, pageProps }: any) {
           useSystemColorMode: false,
         }}
       >
-        <Component {...pageProps} />
+        <VerificationProvider>
+          <Component {...pageProps} />
+        </VerificationProvider>
       </ColorModeProvider>
     </ChakraProvider>
   );

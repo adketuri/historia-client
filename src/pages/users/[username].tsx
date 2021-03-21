@@ -72,6 +72,7 @@ const UserPage = () => {
               <CommentList
                 posts={data.user.posts}
                 username={data?.user?.username}
+                editable={false}
               />
             </TextSection>
           )}

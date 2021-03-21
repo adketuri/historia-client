@@ -33,12 +33,14 @@ interface CommentListProps {
   posts?: RegularPostFragment[] | SimplePostFragment[] | undefined | null;
   gameId?: number;
   username?: string;
+  editable?: boolean;
 }
 
 export const CommentList: React.FC<CommentListProps> = ({
   posts,
   gameId,
   username,
+  editable = true,
 }) => {
   const { data } = useMeQuery();
   const [editing, setEditing] = useState<undefined | number>(undefined);
@@ -135,7 +137,7 @@ export const CommentList: React.FC<CommentListProps> = ({
               <Box key={p.id} pb={5}>
                 <Flex>
                   <TextChunk text={p.body} />
-                  {!editing && author?.id === data?.me?.id && (
+                  {!editing && author?.id === data?.me?.id && editable && (
                     <IconButton
                       aria-label="Edit Comment"
                       icon={<EditIcon />}
@@ -144,19 +146,20 @@ export const CommentList: React.FC<CommentListProps> = ({
                       onClick={() => setEditing(p.id)}
                     />
                   )}
-                  {(data?.me?.isAdmin || author?.id === data?.me?.id) && (
-                    <IconButton
-                      aria-label="Delete Comment"
-                      icon={<DeleteIcon />}
-                      variant="ghost"
-                      size="xs"
-                      ml={1}
-                      onClick={() => {
-                        setDeletingId(p.id);
-                        setIsOpen(true);
-                      }}
-                    />
-                  )}
+                  {(data?.me?.isAdmin || author?.id === data?.me?.id) &&
+                    editable && (
+                      <IconButton
+                        aria-label="Delete Comment"
+                        icon={<DeleteIcon />}
+                        variant="ghost"
+                        size="xs"
+                        ml={1}
+                        onClick={() => {
+                          setDeletingId(p.id);
+                          setIsOpen(true);
+                        }}
+                      />
+                    )}
                 </Flex>
                 <Flex>
                   <Spacer />

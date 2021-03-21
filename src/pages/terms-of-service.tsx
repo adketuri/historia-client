@@ -12,6 +12,10 @@ const TermsPage: React.FC = () => {
         Maker games. Please note the following features and usage terms. Failure
         to comply may result in loss of access to website features.
       </TextSection>
+      <TextSection heading="Game Discussion">
+        You are encouraged to share your thoughts on the various game pages, but
+        please keep things civil.
+      </TextSection>
       <TextSection heading="Downloading Games">
         By supplying a valid email address you may register an account to
         download games. Please download at your own risk. Files are not scanned

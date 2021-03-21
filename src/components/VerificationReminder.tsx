@@ -1,7 +1,7 @@
-import { makeVar } from "@apollo/client";
-import { Box, CloseButton, Flex, useColorMode } from "@chakra-ui/react";
+import { CloseButton, Flex, Text, useColorMode } from "@chakra-ui/react";
 import * as React from "react";
 import { useMeQuery } from "../generated/graphql";
+import { useVerification } from "./VerificationProvider";
 
 interface VerificationReminderProps {}
 
@@ -11,25 +11,28 @@ export const VerificationReminder: React.FC<VerificationReminderProps> = () => {
   const outlineColor = { light: "blue.300", dark: "blue.700" };
 
   const { data } = useMeQuery();
-  const dismissed = makeVar(false);
+  const verification = useVerification();
 
-  if (dismissed() || data?.me?.isVerified) {
+  if (data?.me?.isVerified || verification.dismissed) {
     return <></>;
   }
 
   return (
     <Flex
+      w="100%"
       align="center"
-      p={3}
+      py={2}
       bg={bgColor[colorMode]}
       outlineColor={outlineColor[colorMode]}
     >
-      Please check your email {dismissed()}
+      <Text ml={[5, 10, 20]}>
+        Please check your email to verify your account!
+      </Text>
       <CloseButton
         ml="auto"
+        mr={[5, 10, 20]}
         onClick={() => {
-          console.log(dismissed());
-          dismissed(true);
+          verification.setDismissed(true);
         }}
       />
     </Flex>

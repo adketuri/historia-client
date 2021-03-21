@@ -27,7 +27,7 @@ export const Layout: React.FC<LayoutProps> = ({
         <link rel="Favicon" href="/favicon.ico" />
         <title>{`${title} : rm2k.net`}</title>
       </Head>
-      <Flex direction="column" color={color[colorMode]} height="100vh">
+      <Flex direction="column" color={color[colorMode]} minHeight="100vh">
         <NavBar />
         {header && <Box height="300px">{header}</Box>}
         <Box flex={1} bg={bgColor[colorMode]}>

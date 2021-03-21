@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { Layout } from "../../components/Layout";
+import { useVerification } from "../../components/VerificationProvider";
 import { useVerifyEmailMutation } from "../../generated/graphql";
 import { withApollo } from "../../utils/withApollo";
 
@@ -11,6 +12,9 @@ function verifyResults(verified: boolean) {
   const text = verified
     ? "Email verified, thanks!"
     : "Error verifying. Did you already confirm your account?";
+
+  const verification = useVerification();
+  if (verified) verification.setDismissed(true);
   return (
     <Box>
       <Text mb={5}>{text}</Text>

@@ -19,24 +19,28 @@ const About = () => {
         tools to learn from and cherish that otherwise would be lost.
       </Text>
       <TextSection heading="FAQ" spacer={false}>
-        <Heading size="sm" mt="10px">
+        <Heading size="sm" mt="20px">
           How Can I Contribute?
         </Heading>
         If you'd like to submit games, please{" "}
-        <Link variant="footerLink" to="mailto:support@alcuria.net" isExternal>
+        <Link variant="comment" to="mailto:support@alcuria.net" isExternal>
           email us
         </Link>
         .
-        <Heading size="sm" mt="10px">
+        <Heading size="sm" mt="20px">
           How Is This Funded?
         </Heading>
         Everything's paid out-of-pocket. If you'd like to support RM2k.net, we
-        are accepting donations.
-        <Heading size="sm" mt="10px">
+        are{" "}
+        <Link variant="comment" href="https://ko-fi.com/E1E33Q8T1" isExternal>
+          accepting donations
+        </Link>{" "}
+        to help cover bandwidth costs.
+        <Heading size="sm" mt="20px">
           Who Is Responsible For This?
         </Heading>
         RM2k.net is lovingly built by{" "}
-        <Link variant="footerLink" href="https://twitter.com/zexyu" isExternal>
+        <Link variant="comment" href="https://twitter.com/zexyu" isExternal>
           @zexyu
         </Link>
         .

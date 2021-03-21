@@ -25,7 +25,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
   return (
     <Box bg={bgColor[colorMode]} zIndex={10} top={0} position="sticky">
-      {/* <VerificationReminder /> */}
+      <VerificationReminder />
       <Box mx={[5, 10, 20]}>
         <Flex mx="auto" py={1} align="center">
           <NextLink href={"/"}>

@@ -36,7 +36,7 @@ export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
           preset="sm"
           position="absolute"
           top={1}
-          right={5}
+          right={2}
         />
       </Box>
       <Box ml={[1, 2, 3]} mr="auto">

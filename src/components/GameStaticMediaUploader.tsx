@@ -2,6 +2,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import { Box, Flex, FormLabel, Image } from "@chakra-ui/react";
 import * as React from "react";
 import { RegularGameFragment } from "../generated/graphql";
+import { FALLBACK_BANNER, FALLBACK_THUMBNAIL } from "../utils/constants";
 import { Upload, UploadType } from "./Upload";
 
 interface GameStaticMediaUploaderProps {
@@ -31,7 +32,8 @@ export const GameStaticMediaUploader: React.FC<GameStaticMediaUploaderProps> = (
         />
       </Flex>
       <Image
-        src={url || "https://i.imgur.com/PffO0zx.png"}
+        src={url || ""}
+        fallbackSrc={type === "banner" ? FALLBACK_BANNER : FALLBACK_THUMBNAIL}
         width={IMAGE_SZ}
         height={IMAGE_SZ}
         objectFit="cover"

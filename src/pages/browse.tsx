@@ -16,7 +16,7 @@ const Browse = () => {
     notifyOnNetworkStatusChange: true,
   });
   return (
-    <Layout>
+    <Layout title="Browse Classic and Obscure RPG Maker Games">
       {(meQuery.data?.me?.isSubmitter || meQuery.data?.me?.isAdmin) && (
         <Flex>
           <NextLink href="/games/submit">

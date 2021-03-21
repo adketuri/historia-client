@@ -15,7 +15,7 @@ export const ForgotPassword: React.FC<{}> = ({}) => {
   const [forgotPassword] = useForgotPasswordMutation();
 
   return (
-    <Layout variant="small">
+    <Layout title="Forgot Password" variant="small">
       <Formik
         initialValues={{ email: "" }}
         onSubmit={async (values, { setErrors }) => {

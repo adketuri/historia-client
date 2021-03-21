@@ -3,6 +3,7 @@ import { RegularGameFragment, RegularPostFragment } from "../generated/graphql";
 import { TextSection } from "./TextSection";
 import { Box, Flex, Image, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { FALLBACK_THUMBNAIL } from "../utils/constants";
 interface NewGamesColumnProps {
   data: RegularGameFragment[];
 }
@@ -16,7 +17,8 @@ export const NewGamesColumn: React.FC<NewGamesColumnProps> = ({ data }) => {
           return (
             <Flex mb={3} key={g.slug}>
               <Image
-                src={g.thumbnail || "https://i.imgur.com/PffO0zx.png"}
+                src={g.thumbnail || ""}
+                fallbackSrc={FALLBACK_THUMBNAIL}
                 w={12}
                 h={12}
                 mr={3}

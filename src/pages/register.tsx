@@ -17,7 +17,7 @@ export const Register: React.FC<RegisterProps> = () => {
   const [register] = useRegisterMutation();
 
   return (
-    <Layout variant="small">
+    <Layout title="Register An Account" variant="small">
       <FormHeader title="Register An Account">
         Already have an account? Please{" "}
         <NextLink href={"/login"}>

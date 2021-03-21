@@ -23,7 +23,11 @@ const UserPage = () => {
   const meQuery = useMeQuery();
 
   return (
-    <Layout>
+    <Layout
+      title={
+        data?.user?.username ? `${data.user.username}'s Profile` : "Profile"
+      }
+    >
       {loading || !data?.user?.username ? (
         <UserLoading />
       ) : (

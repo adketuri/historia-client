@@ -34,7 +34,7 @@ export const VerifyEmail: NextPage = () => {
   }, [token]);
 
   return (
-    <Layout variant="small">
+    <Layout title="Email Verification" variant="small">
       {!data ? "Verifying..." : verifyResults(data.verifyEmail)}
     </Layout>
   );

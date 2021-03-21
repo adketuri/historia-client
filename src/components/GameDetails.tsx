@@ -22,6 +22,7 @@ import { ScreenshotList } from "./ScreenshotList";
 import { TextSection } from "./TextSection";
 import NextLink from "next/link";
 import { TextChunk } from "./TextChunk";
+import { FALLBACK_BANNER, FALLBACK_THUMBNAIL } from "../utils/constants";
 
 interface GameDetailsProps {
   game: RegularGameFragment;
@@ -40,7 +41,8 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
       sx={{ transform: "translate3d(0, 0, 0)" }}
     >
       <Image
-        src={game.banner || "https://i.imgur.com/PffO0zx.png"}
+        src={game.banner || ""}
+        fallbackSrc={FALLBACK_BANNER}
         w="100%"
         objectFit="cover"
         h="300px"
@@ -58,11 +60,12 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
 
   return (
     <>
-      <Layout header={header}>
+      <Layout header={header} title={`${game.title}, Classic RPG Maker Game`}>
         <Flex>
           <Box zIndex="1" flex="1" h="200px" mt="-100px" mx="20px">
             <Image
-              src={game.thumbnail || "https://i.imgur.com/PffO0zx.png"}
+              src={game.thumbnail || ""}
+              fallbackSrc={FALLBACK_THUMBNAIL}
               objectFit="cover"
               height="100%"
               mb="20px"

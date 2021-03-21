@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import * as React from "react";
 import { GameDetails } from "../../components/GameDetails";
+import { Layout } from "../../components/Layout";
 import { useGameQuery } from "../../generated/graphql";
 import { withApollo } from "../../utils/withApollo";
 
@@ -13,11 +14,11 @@ export const ViewGame: React.FC<ViewGameProps> = () => {
 
   let content = undefined;
   if (!data) {
-    content = "Loading";
+    content = <Layout title="Loading Game">Loading</Layout>;
   } else if (data?.game) {
     content = <GameDetails game={data.game} />;
   } else if (error) {
-    content = error.message;
+    content = <Layout title="Error Loading Game">{error.message}</Layout>;
   }
   return <>{content}</>;
 };

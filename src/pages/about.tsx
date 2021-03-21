@@ -6,7 +6,7 @@ import { Heading, Link, Spacer, Text } from "@chakra-ui/react";
 
 const About = () => {
   return (
-    <Layout>
+    <Layout title="About RPG Maker Game Preservation">
       <TextSection heading="About RM2k.net" spacer={false}>
         RM2k.net is an effort to preserve games made with older RPG Maker game
         engines. Our goal is to archive an extensive database of games built

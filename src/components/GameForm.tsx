@@ -1,23 +1,18 @@
-import { EditIcon } from "@chakra-ui/icons";
 import {
-  Flex,
   Button,
-  FormLabel,
   Checkbox,
-  Grid,
-  Image,
   CheckboxGroup,
+  Flex,
+  FormLabel,
   SimpleGrid,
-  Box,
 } from "@chakra-ui/react";
-import { Formik, Form } from "formik";
+import { Form, Formik } from "formik";
 import router from "next/router";
 import * as React from "react";
 import { ReactText, useCallback, useState } from "react";
 import {
   RegularGameFragment,
   useCreateGameMutation,
-  useGameQuery,
   useUpdateGameMutation,
 } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
@@ -25,7 +20,6 @@ import { FormHeader } from "./FormHeader";
 import { GameStaticMediaUploader } from "./GameStaticMediaUploader";
 import { InfoButton } from "./InfoButton";
 import { InputField } from "./InputField";
-import { Upload } from "./Upload";
 
 interface GameFormProps {
   editing: boolean;
@@ -65,7 +59,7 @@ export const GameForm: React.FC<GameFormProps> = ({ editing, game }) => {
   const initialValues = {
     title: game?.title || "",
     author: game?.author || "",
-    year: game?.year || "",
+    year: game?.year || 2000,
     shortDescription: game?.shortDescription || "",
     longDescription: game?.longDescription || "",
   };

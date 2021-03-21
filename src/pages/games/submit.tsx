@@ -9,7 +9,7 @@ interface SubmitGameProps {}
 const SubmitGame: React.FC<{}> = ({}) => {
   useIsSubmitter();
   return (
-    <Layout>
+    <Layout title="Submit a Game">
       <GameForm editing={false} />
     </Layout>
   );

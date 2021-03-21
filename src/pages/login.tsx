@@ -23,7 +23,7 @@ export const Login: React.FC<{}> = () => {
   const [login] = useLoginMutation();
 
   return (
-    <Layout variant="small">
+    <Layout title="Sign in" variant="small">
       <FormHeader title="Sign in to your account">
         New here? Please{" "}
         <NextLink href={"/register"}>

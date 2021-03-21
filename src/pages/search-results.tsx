@@ -17,7 +17,7 @@ const SearchResults = () => {
     notifyOnNetworkStatusChange: true,
   });
   return (
-    <Layout>
+    <Layout title="Search For Rare and Obscure RPG Maker Games">
       <TextSection heading="Search" />
       {!data || !data.findGames ? (
         <Text>Loading</Text>

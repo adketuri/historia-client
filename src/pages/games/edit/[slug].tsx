@@ -18,7 +18,7 @@ const EditGame: React.FC<{}> = () => {
   const { data, loading, error } = useGameQuery({ variables: { slug } });
 
   return (
-    <Layout>
+    <Layout title={data?.game ? `Editing ${data.game.title}` : "Editing"}>
       {!data?.game ? (
         <Box>Loading</Box>
       ) : (

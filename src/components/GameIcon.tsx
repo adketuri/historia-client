@@ -10,6 +10,7 @@ import * as React from "react";
 import { RegularGameFragment } from "../generated/graphql";
 import NextLink from "next/link";
 import { FavoriteButton } from "./FavoriteButton";
+import { FALLBACK_THUMBNAIL } from "../utils/constants";
 
 interface GameIconProps {
   index: number;
@@ -25,7 +26,8 @@ export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
         <Image
           objectFit="cover"
           width="100%"
-          src={game.thumbnail! || "https://i.imgur.com/PffO0zx.png"}
+          src={game.thumbnail! || ""}
+          fallbackSrc={FALLBACK_THUMBNAIL}
         />
         <FavoriteButton
           game={game}

@@ -14,7 +14,7 @@ const Index = () => {
   });
   const [favorite] = useFavoriteMutation();
   return (
-    <Layout>
+    <Layout title="Discover Rare and Obscure RPG Maker Games">
       {!data || !data.homepage ? (
         <Box>Loading</Box>
       ) : (

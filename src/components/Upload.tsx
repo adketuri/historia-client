@@ -1,6 +1,8 @@
 import { AddIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
+  CircularProgress,
   Flex,
   IconButton,
   Modal,
@@ -122,6 +124,13 @@ const S3Uploader: React.FC<S3UploaderProps> = ({
         onFinish={handleFinishedUpload}
         s3Url={process.env.NEXT_PUBLIC_S3_URL}
         maxSize={1024 * 1024 * sizeMb}
+        progressComponent={(obj: any) => (
+          <Box align="center" mt={10}>
+            {obj.progress && (
+              <CircularProgress value={obj.progress} size="120px" />
+            )}
+          </Box>
+        )}
         upload={uploadOptions}
       />
       <Text color={textColor} fontSize="sm" mt={5}>

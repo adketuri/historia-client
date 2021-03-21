@@ -25,10 +25,9 @@ interface PromotedGamesProps {
 
 export const PromotedGames: React.FC<PromotedGamesProps> = ({ games }) => {
   const slides = useBreakpointValue({ base: 2, sm: 3, md: 4, lg: 5 });
-  const spacer = useBreakpointValue({ base: false, sm: true });
   return (
     <>
-      <TextSection heading="Weekly Showcase" spacer={spacer}>
+      <TextSection heading="Weekly Showcase" spacer={false}>
         <Box pos="relative" width="100%">
           <CarouselProvider
             naturalSlideWidth={300}

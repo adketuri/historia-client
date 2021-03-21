@@ -31,16 +31,19 @@ export const UserControls: React.FC<UserControlsProps> = ({ vertical }) => {
   if (!data?.me) {
     // Not logged in
     body = (
-      <Flex direction={vertical ? "column" : "row"}>
+      <Flex align="center" direction={vertical ? "column" : "row"}>
         <Button
-          mr={2}
+          ml="auto"
+          mr={vertical ? -2 : 2}
           onClick={() => router.push("/login?next=" + getNextPage(router))}
-          size={vertical ? "xl" : "xs"}
+          size="xs"
           variant="nav"
         >
           Login
         </Button>
         <Button
+          ml="auto"
+          mr={vertical ? -2 : 0}
           onClick={() => router.push("/register?next=" + getNextPage(router))}
           size="xs"
           variant="nav"
@@ -52,9 +55,10 @@ export const UserControls: React.FC<UserControlsProps> = ({ vertical }) => {
   } else {
     // Logged in
     body = (
-      <Flex align="center" direction={vertical ? "column" : "row"}>
+      <Flex align="right" direction={vertical ? "column" : "row"}>
         <Button
-          mr={vertical ? -8 : 2}
+          ml="auto"
+          mr={vertical ? -2 : 2}
           onClick={() => router.push(`/users/${data.me?.username}`)}
           size="xs"
           variant="nav"
@@ -62,7 +66,8 @@ export const UserControls: React.FC<UserControlsProps> = ({ vertical }) => {
           Profile
         </Button>
         <Button
-          mr={vertical ? -8 : 0}
+          ml="auto"
+          mr={vertical ? -2 : 0}
           onClick={async () => {
             await logout();
             await apolloClient.resetStore();

@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   Image,
   Link,
@@ -23,12 +24,13 @@ export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
   return (
     <Box shadow="md" bg={bgColor}>
       <Box>
-        <Image
-          objectFit="cover"
-          width="100%"
-          src={game.thumbnail! || ""}
-          fallbackSrc={FALLBACK_THUMBNAIL}
-        />
+        <AspectRatio ratio={7 / 6}>
+          <Image
+            objectFit="cover"
+            src={game.thumbnail! || ""}
+            fallbackSrc={FALLBACK_THUMBNAIL}
+          />
+        </AspectRatio>
         <FavoriteButton
           game={game}
           preset="sm"
@@ -37,13 +39,13 @@ export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
           right={5}
         />
       </Box>
-      <Box ml={[1, 3, 5]} mr="auto">
+      <Box ml={[1, 2, 3]} mr="auto">
         <NextLink href={`games/${game.slug}`}>
           <Link variant="title" fontSize={["sm", "md", "lg"]}>
             <Text noOfLines={1}>{game.title || "Untitled"}</Text>
           </Link>
         </NextLink>
-        <Text fontSize="sm">{game.author || "Unknown"}</Text>
+        <Text fontSize="xs">{game.author || "Unknown"}</Text>
       </Box>
     </Box>
   );

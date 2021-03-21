@@ -25,13 +25,16 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
   return (
     <Box shadow="sm" key={game.id} width="100%">
       <Flex bgColor={bgColor[colorMode]}>
-        <Image
-          src={game.thumbnail || ""}
-          objectFit="cover"
-          fallbackSrc={FALLBACK_THUMBNAIL}
-          height="100%"
-        />
-        <Box ml={5} mt={3} width="100%">
+        <Box flex={1}>
+          <Image
+            src={game.thumbnail || ""}
+            objectFit="cover"
+            fallbackSrc={FALLBACK_THUMBNAIL}
+            w="100%"
+            h="160px"
+          />
+        </Box>
+        <Box ml={5} mt={3} flex={[2, 3]} width="100%">
           <NextLink href={`/games/${game.slug}`}>
             <Link variant="title">{game.title || "Untitled"}</Link>
           </NextLink>

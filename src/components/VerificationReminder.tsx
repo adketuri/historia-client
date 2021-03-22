@@ -13,7 +13,7 @@ export const VerificationReminder: React.FC<VerificationReminderProps> = () => {
   const { data } = useMeQuery();
   const verification = useVerification();
 
-  if (data?.me?.isVerified || verification.dismissed) {
+  if (!data?.me || data?.me?.isVerified || verification.dismissed) {
     return <></>;
   }
 

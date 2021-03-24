@@ -34,8 +34,7 @@ const GameThumbnail: React.FC<GameDetailsProps> = ({ game }) => {
   return (
     <Box zIndex="1" flex="1" h={height} mt="-100px" mr="20px">
       <Image
-        src={game.thumbnail || ""}
-        fallbackSrc={FALLBACK_THUMBNAIL}
+        src={game.thumbnail || FALLBACK_THUMBNAIL}
         objectFit="cover"
         height="100%"
         width="100%"
@@ -61,8 +60,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game }) => {
       sx={{ transform: "translate3d(0, 0, 0)" }}
     >
       <Image
-        src={game.banner || ""}
-        fallbackSrc={FALLBACK_BANNER}
+        src={game.banner || FALLBACK_BANNER}
         w="100%"
         objectFit="cover"
         h="300px"

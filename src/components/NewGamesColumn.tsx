@@ -17,8 +17,7 @@ export const NewGamesColumn: React.FC<NewGamesColumnProps> = ({ data }) => {
           return (
             <Flex mb={3} key={g.slug}>
               <Image
-                src={g.thumbnail || ""}
-                fallbackSrc={FALLBACK_THUMBNAIL}
+                src={g.thumbnail || FALLBACK_THUMBNAIL}
                 w={12}
                 h={12}
                 mr={3}

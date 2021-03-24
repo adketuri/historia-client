@@ -25,11 +25,7 @@ export const GameIcon: React.FC<GameIconProps> = ({ index, game }) => {
     <Box shadow="md" bg={bgColor}>
       <Box>
         <AspectRatio ratio={7 / 6}>
-          <Image
-            objectFit="cover"
-            src={game.thumbnail! || ""}
-            fallbackSrc={FALLBACK_THUMBNAIL}
-          />
+          <Image objectFit="cover" src={game.thumbnail || FALLBACK_THUMBNAIL} />
         </AspectRatio>
         <FavoriteButton
           game={game}

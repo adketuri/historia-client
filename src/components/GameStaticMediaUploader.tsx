@@ -32,8 +32,7 @@ export const GameStaticMediaUploader: React.FC<GameStaticMediaUploaderProps> = (
         />
       </Flex>
       <Image
-        src={url || ""}
-        fallbackSrc={type === "banner" ? FALLBACK_BANNER : FALLBACK_THUMBNAIL}
+        src={url || (type === "banner" ? FALLBACK_BANNER : FALLBACK_THUMBNAIL)}
         width={IMAGE_SZ}
         height={IMAGE_SZ}
         objectFit="cover"

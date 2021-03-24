@@ -27,9 +27,8 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
       <Flex bgColor={bgColor[colorMode]}>
         <Box flex={1}>
           <Image
-            src={game.thumbnail || ""}
+            src={game.thumbnail || FALLBACK_THUMBNAIL}
             objectFit="cover"
-            fallbackSrc={FALLBACK_THUMBNAIL}
             w="100%"
             h="160px"
           />

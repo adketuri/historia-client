@@ -1,4 +1,4 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text, useBreakpointValue } from "@chakra-ui/react";
 import { CarouselProvider, Slide, Slider } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import * as React from "react";
@@ -26,12 +26,13 @@ export const ScreenshotList: React.FC<ScreenshotListProps> = ({
     (game?.screenshots ? game.screenshots : screenshots) || [];
 
   const lastRef = useRef(null);
+  const slides = useBreakpointValue({ base: 1, md: 2 });
   return (
     <Box pos="relative">
       <CarouselProvider
         naturalSlideWidth={320}
         naturalSlideHeight={240}
-        visibleSlides={2}
+        visibleSlides={slides}
         totalSlides={screens.length}
         infinite={true}
       >

@@ -1,17 +1,5 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Flex,
-  useBreakpointValue,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import {
-  ButtonBack,
-  ButtonNext,
-  CarouselProvider,
-  Slide,
-  Slider,
-} from "pure-react-carousel";
+import { Box, useBreakpointValue } from "@chakra-ui/react";
+import { CarouselProvider, Slide, Slider } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import * as React from "react";
 import { RegularGameFragment } from "../generated/graphql";
